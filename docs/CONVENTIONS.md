@@ -66,6 +66,92 @@
 - 有明确产出时，文档和代码应尽量一起提交到 Git
 - 如果当前线程只有讨论，没有形成实际产出，可以只更新文档，不强制提交 Git
 
+## 包管理与初始化命令
+项目默认使用 `pnpm` 作为包管理工具。
+
+项目初始化命令默认使用：
+```bash
+pnpm create vite . --template vue-ts
+```
+
+## 项目初始化最小范围
+项目初始化阶段默认只做到以下范围：
+- 使用 Vue 3 + TypeScript 创建项目基础脚手架
+- 接入 Vue Router、Pinia、Element Plus、Tailwind CSS、Axios
+- 配置 ESLint 和 Prettier
+- 建立基础目录结构、路径别名和全局样式入口
+- 建立基础路由、基础布局和请求封装骨架
+
+项目初始化阶段默认不包含以下内容：
+- 具体业务页面实现
+- 真实接口联调
+- 权限体系完整实现
+- 多语言、主题系统、复杂工程优化
+- 单元测试、E2E、CI/CD、Docker
+
+## 初始化后首批基础文件范围
+项目初始化完成后，首批基础文件默认至少包含：
+- `src/main.ts`
+- `src/App.vue`
+- `src/router/index.ts`
+- `src/stores/index.ts`
+- `src/api/request.ts`
+- `src/layouts/AppLayout.vue`
+- `src/views/dashboard/index.vue`
+- `src/styles/index.css`
+- `src/types/`
+- `src/utils/`
+
+## 目录结构约定
+项目初始化后默认采用以下目录结构：
+
+```text
+src/
+  api/
+    modules/
+  assets/
+  components/
+  composables/
+  constants/
+  layouts/
+  router/
+    modules/
+  stores/
+    modules/
+  styles/
+  types/
+  utils/
+  views/
+    dashboard/
+```
+
+目录职责：
+- `api/`：接口请求封装和接口模块
+- `api/modules/`：按业务域拆分的接口文件
+- `components/`：可复用通用组件
+- `composables/`：组合式逻辑
+- `layouts/`：全局布局组件
+- `router/`：路由入口和路由模块
+- `stores/`：Pinia 状态管理入口
+- `stores/modules/`：按模块拆分的 store
+- `styles/`：全局样式、变量和 Tailwind 入口
+- `types/`：全局共享类型
+- `utils/`：纯工具函数
+- `views/`：页面级组件
+
+## 命名规则
+默认命名规则如下：
+- Vue 组件文件和布局文件使用 `PascalCase`，例如 `AppLayout.vue`、`PageHeader.vue`
+- 页面目录使用 `kebab-case`，页面入口统一使用 `index.vue`，例如 `views/user-management/index.vue`
+- `composables` 使用 `useXxx.ts`，例如 `useTable.ts`
+- `stores/modules` 使用 `xxx.ts` 文件名，导出统一使用 `useXxxStore`
+- `api/modules` 使用 `xxx.ts` 文件名，按业务域组织接口
+- `router/modules` 使用 `xxx.ts` 文件名，按业务域组织路由
+- 普通 TypeScript 文件默认使用 `kebab-case`
+- 常量文件可使用 `UPPER_SNAKE_CASE` 常量名，文件名仍使用 `kebab-case`
+- 路由路径使用 `kebab-case`
+- 路由 `name` 使用 `PascalCase`
+
 ## 工程规范
 - 保持代码风格一致
 - 默认遵循 ESLint 和 Prettier 约定

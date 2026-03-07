@@ -1,48 +1,96 @@
-# .
+﻿# mini-admin-ai-flow
 
-This template should help get you started developing with Vue 3 in Vite.
+一个基于 Vue 3 的后台管理前端项目。
 
-## Recommended IDE Setup
+当前项目已经完成基础脚手架初始化，并接入了后台项目常用的核心依赖与基础骨架，后续会在此基础上继续完善认证、权限、页面模块和业务能力。
 
-[VS Code](https://code.visualstudio.com/) + [Vue (Official)](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+## 当前技术栈
+- Vue 3
+- TypeScript
+- Vue Router
+- Pinia
+- Element Plus
+- Tailwind CSS 4
+- Axios
+- Vite
+- ESLint
+- Prettier
 
-## Recommended Browser Setup
+## 项目阶段
+当前处于基础结构整理阶段。
 
-- Chromium-based browsers (Chrome, Edge, Brave, etc.):
-  - [Vue.js devtools](https://chromewebstore.google.com/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd)
-  - [Turn on Custom Object Formatter in Chrome DevTools](http://bit.ly/object-formatters)
-- Firefox:
-  - [Vue.js devtools](https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools/)
-  - [Turn on Custom Object Formatter in Firefox DevTools](https://fxdx.dev/firefox-devtools-custom-object-formatters/)
+已完成：
+- Vue 官方脚手架初始化
+- Router、Pinia、Element Plus、Tailwind CSS、Axios 接入
+- 基础后台布局和 Dashboard 骨架
+- 基础请求封装入口
+- 项目协作与上下文文档落地
 
-## Type Support for `.vue` Imports in TS
-
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vite.dev/config/).
-
-## Project Setup
-
-```sh
+## 常用命令
+安装依赖：
+```bash
 npm install
 ```
 
-### Compile and Hot-Reload for Development
-
-```sh
+启动开发环境：
+```bash
 npm run dev
 ```
 
-### Type-Check, Compile and Minify for Production
+类型检查：
+```bash
+npx vue-tsc --build
+```
 
-```sh
+生产构建：
+```bash
 npm run build
 ```
 
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
+代码检查：
+```bash
 npm run lint
 ```
+
+代码格式化：
+```bash
+npm run format
+```
+
+## 文档入口
+项目协作和上下文文档：
+- `AGENTS.md`：AI 助手协作规则
+- `docs/CONVENTIONS.md`：项目开发流程和执行规范
+- `docs/WORKING_CONTEXT.md`：当前项目状态、关键决定和下一步
+
+## 当前目录结构
+```text
+src/
+  api/
+  components/
+  composables/
+  constants/
+  layouts/
+  router/
+  stores/
+  styles/
+  types/
+  utils/
+  views/
+```
+
+当前已经建立的核心入口包括：
+- `src/main.ts`
+- `src/App.vue`
+- `src/router/index.ts`
+- `src/router/modules/dashboard.ts`
+- `src/layouts/AppLayout.vue`
+- `src/views/dashboard/index.vue`
+- `src/api/request.ts`
+- `src/styles/index.css`
+
+## 当前说明
+- 默认包管理工具：`npm`
+- 默认脚手架初始化命令：`npm create vue@latest`
+- 当前构建可通过
+- Element Plus 目前为全量引入，后续可再做按需优化

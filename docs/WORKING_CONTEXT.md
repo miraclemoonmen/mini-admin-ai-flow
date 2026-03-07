@@ -109,10 +109,15 @@
 - 计划改动点：替换菜单与头部中文文案；改写 dashboard 的卡片、表格、公告和快捷入口内容；调整圆角、配色和层次表现
 - 预计涉及文件：`src/layouts/AppLayout.vue`、`src/views/dashboard/index.vue`、`docs/WORKING_CONTEXT.md`
 - 实际改动文件：`src/layouts/AppLayout.vue`、`src/views/dashboard/index.vue`、`docs/WORKING_CONTEXT.md`
-- 验证结果：已通过 `vue-tsc --build` 和 `vite build`；构建仍提示 Element Plus 全量引入导致产物体积偏大
+- 验证结果：已通过 `vue-tsc --build`、`npm run type-check` 和 `npm run build-only`；构建仍提示 Element Plus 全量引入导致产物体积偏大
 - 遗留问题：当前无单独遗留问题；包体积优化仍归属于 `REQ-20260307-02` 持续处理
 - 记录：
   - 2026-03-08 需求确认：用户确认将 dashboard 文案改为中文，主题偏向外贸家居类，并将整体 UI 调整为更圆角、更活泼的风格。
   - 2026-03-08 开始实现：确认保留现有后台骨架，重点调整 layout 和 dashboard 的文案、主题数据以及视觉圆角和配色表现。
   - 2026-03-08 完成：已将 layout 与 dashboard 文案改为中文，主题切换为外贸家居场景，并统一调整为更圆角、更活泼的视觉风格。
   - 2026-03-08 验证：已通过 `vue-tsc --build` 和 `vite build`；构建仍提示 Element Plus 全量引入导致产物体积偏大。
+  - 2026-03-08 后续追加：优化首屏摘要卡的高潜市场布局，避免 `美国 / 德国 / 波兰` 在窄宽度下换行，并修正收起导航后的菜单折叠态样式。
+  - 2026-03-08 追加验证：已通过 `npm run type-check` 和 `npm run build-only`；构建仍提示 Element Plus 全量引入导致产物体积偏大。
+  - 2026-03-08 后续追加：为侧栏一级菜单和灵感中心标题补充折叠态可见图标，并收紧折叠态菜单项与 tooltip 触发区样式，避免收起导航后菜单失去视觉锚点。
+  - 2026-03-08 追加验证：已通过 `npm run type-check`。
+

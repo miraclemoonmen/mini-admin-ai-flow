@@ -27,17 +27,17 @@
               </div>
 
               <div class="rounded-[28px] border border-orange-100 bg-white/80 px-5 py-5 shadow-[0_16px_38px_rgba(148,76,20,0.08)] backdrop-blur-sm">
-                <div class="flex items-center justify-between gap-4">
-                  <div>
+                <div class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+                  <div class="min-w-0 flex-1">
                     <p class="text-sm font-semibold text-slate-900">本季风格摘要</p>
                     <p class="mt-2 text-xs leading-6 text-slate-500">
                       低饱和奶油白、浅橡木与藤编混搭继续上行，买手更偏好轻体积、好陈列、可组合的居家单品。
                     </p>
                   </div>
                   <div class="hidden h-16 w-px bg-orange-100 lg:block"></div>
-                  <div class="min-w-[130px] rounded-[22px] bg-[#fff7f0] px-4 py-3 text-right">
+                  <div class="market-pill rounded-[22px] bg-[#fff7f0] px-4 py-3 lg:text-right">
                     <p class="text-xs text-slate-500">高潜市场</p>
-                    <p class="mt-2 text-base font-semibold text-slate-900">美国 / 德国 / 波兰</p>
+                    <p class="market-pill__value mt-2 text-base font-semibold text-slate-900">美国 / 德国 / 波兰</p>
                   </div>
                 </div>
               </div>
@@ -345,6 +345,21 @@ const notices = [
   box-shadow: 0 20px 40px rgba(249, 115, 22, 0.14);
 }
 
+.market-pill {
+  min-width: fit-content;
+}
+
+.market-pill__value {
+  white-space: nowrap;
+}
+
+@media (max-width: 1279px) {
+  .market-pill {
+    width: 100%;
+    text-align: left;
+  }
+}
+
 :deep(.el-card__header) {
   border-bottom: 0;
   padding-bottom: 0;
@@ -362,3 +377,4 @@ const notices = [
   overflow: hidden;
 }
 </style>
+

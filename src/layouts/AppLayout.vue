@@ -29,16 +29,22 @@
           router
         >
           <el-menu-item index="/">
-            <span>经营看板</span>
+            <div class="menu-icon" aria-hidden="true">看</div>
+            <span class="menu-label">经营看板</span>
           </el-menu-item>
           <el-menu-item index="/products" disabled>
-            <span>产品选品</span>
+            <div class="menu-icon" aria-hidden="true">品</div>
+            <span class="menu-label">产品选品</span>
           </el-menu-item>
           <el-menu-item index="/orders" disabled>
-            <span>订单履约</span>
+            <div class="menu-icon" aria-hidden="true">单</div>
+            <span class="menu-label">订单履约</span>
           </el-menu-item>
           <el-sub-menu index="workspace">
-            <template #title>灵感中心</template>
+            <template #title>
+              <div class="menu-icon" aria-hidden="true">灵</div>
+              <span class="menu-label">灵感中心</span>
+            </template>
             <el-menu-item index="/workspace/reports" disabled>市场洞察</el-menu-item>
             <el-menu-item index="/workspace/audit" disabled>买家反馈</el-menu-item>
           </el-sub-menu>
@@ -107,6 +113,29 @@ const currentPageTitle = computed(() => {
   border-radius: 18px;
   margin-bottom: 8px;
   height: 48px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.menu-icon {
+  flex: 0 0 28px;
+  width: 28px;
+  height: 28px;
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.9);
+  color: #c2410c;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+  box-shadow: inset 0 0 0 1px rgba(251, 146, 60, 0.18);
+}
+
+.menu-label {
+  min-width: 0;
 }
 
 .app-shell :deep(.el-menu-item:hover),
@@ -117,5 +146,50 @@ const currentPageTitle = computed(() => {
 .app-shell :deep(.el-menu-item.is-active) {
   background: linear-gradient(135deg, rgba(255, 237, 213, 1) 0%, rgba(255, 255, 255, 1) 100%);
   box-shadow: 0 10px 24px rgba(249, 115, 22, 0.12);
+}
+
+.app-shell :deep(.el-menu-item.is-active .menu-icon),
+.app-shell :deep(.el-sub-menu.is-active > .el-sub-menu__title .menu-icon) {
+  background: linear-gradient(135deg, #fb923c 0%, #f97316 100%);
+  color: white;
+  box-shadow: none;
+}
+
+.app-shell :deep(.el-menu--collapse) {
+  width: 100%;
+}
+
+.app-shell :deep(.el-menu--collapse .el-menu-item),
+.app-shell :deep(.el-menu--collapse .el-sub-menu__title) {
+  justify-content: center;
+  padding: 0;
+  margin-inline: auto;
+  width: 56px;
+  gap: 0;
+}
+
+.app-shell :deep(.el-menu--collapse .menu-label) {
+  display: none;
+}
+
+.app-shell :deep(.el-menu--collapse .menu-icon) {
+  margin: 0;
+}
+
+.app-shell :deep(.el-menu--collapse .el-sub-menu__icon-arrow) {
+  display: none;
+}
+
+.app-shell :deep(.el-menu--collapse .el-tooltip__trigger),
+.app-shell :deep(.el-menu--collapse .el-sub-menu > .el-tooltip),
+.app-shell :deep(.el-menu--collapse .el-menu-tooltip__trigger) {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.app-shell :deep(.el-menu--collapse .el-sub-menu .el-sub-menu__title) {
+  padding-inline: 0;
 }
 </style>

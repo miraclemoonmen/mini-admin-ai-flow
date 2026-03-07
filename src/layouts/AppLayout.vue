@@ -1,8 +1,8 @@
 ﻿<template>
-  <el-container class="app-shell min-h-screen bg-[#fff8f1] text-slate-900">
+  <el-container class="app-shell h-screen overflow-hidden bg-[#fff8f1] text-slate-900">
     <el-aside
       :width="appStore.sidebarCollapsed ? '82px' : '252px'"
-      class="border-r border-orange-100 bg-[#fff1e6] text-slate-900 transition-all duration-300"
+      class="flex h-screen flex-col border-r border-orange-100 bg-[#fff1e6] text-slate-900 transition-all duration-300"
     >
       <div class="px-4 py-4">
         <div class="flex items-center rounded-[28px] bg-white px-4 py-3 shadow-[0_16px_40px_rgba(249,115,22,0.12)]">
@@ -18,7 +18,7 @@
         </div>
       </div>
 
-      <div class="px-3 pb-4">
+      <div class="flex-1 overflow-y-auto px-3 pb-4">
         <el-menu
           :default-active="activeMenu"
           :collapse="appStore.sidebarCollapsed"
@@ -52,34 +52,29 @@
       </div>
     </el-aside>
 
-    <el-container>
-      <el-header class="mx-4 mt-4 flex h-18 items-center justify-between rounded-[30px] border border-orange-100 bg-white px-6 shadow-[0_14px_34px_rgba(249,115,22,0.08)]">
-        <div class="flex items-center gap-4">
-          <el-button round class="!border-orange-200 !bg-orange-50 !text-orange-600" @click="appStore.toggleSidebar()">
-            {{ appStore.sidebarCollapsed ? '展开导航' : '收起导航' }}
-          </el-button>
-          <div>
-            <p class="text-xs uppercase tracking-[0.24em] text-orange-400">FURNITURE EXPORT STUDIO</p>
-            <p class="text-lg font-semibold text-slate-900">外贸家居经营看板</p>
+    <el-container class="h-screen overflow-hidden">
+      <div class="flex h-full min-w-0 flex-1 flex-col overflow-hidden">
+        <el-header class="mx-4 mt-4 flex h-18 shrink-0 items-center justify-between rounded-[30px] border border-orange-100 bg-white px-6 shadow-[0_14px_34px_rgba(249,115,22,0.08)]">
+          <div class="flex items-center gap-4">
+            <el-button round class="!border-orange-200 !bg-orange-50 !text-orange-600" @click="appStore.toggleSidebar()">
+              {{ appStore.sidebarCollapsed ? '展开导航' : '收起导航' }}
+            </el-button>
+            <div>
+              <p class="text-xs uppercase tracking-[0.24em] text-orange-400">FURNITURE EXPORT STUDIO</p>
+              <p class="text-lg font-semibold text-slate-900">{{ currentPageTitle }}</p>
+            </div>
           </div>
-        </div>
 
-        <div class="flex items-center gap-3">
-          <el-tag round class="!border-0 !bg-emerald-50 !text-emerald-600">店铺在线</el-tag>
-          <el-avatar :size="40" class="!bg-gradient-to-br from-orange-400 to-pink-400">M</el-avatar>
-        </div>
-      </el-header>
+          <div class="flex items-center gap-3">
+            <el-tag round class="!border-0 !bg-emerald-50 !text-emerald-600">店铺在线</el-tag>
+            <el-avatar :size="40" class="!bg-gradient-to-br from-orange-400 to-pink-400">M</el-avatar>
+          </div>
+        </el-header>
 
-      <div class="mx-4 mt-4 rounded-[26px] border border-orange-100 bg-white px-6 py-4 shadow-[0_10px_30px_rgba(249,115,22,0.06)]">
-        <el-breadcrumb separator="/">
-          <el-breadcrumb-item>首页</el-breadcrumb-item>
-          <el-breadcrumb-item>{{ currentPageTitle }}</el-breadcrumb-item>
-        </el-breadcrumb>
+        <el-main class="min-h-0 flex-1 overflow-y-auto px-4 py-4 md:px-6 md:py-5">
+          <RouterView />
+        </el-main>
       </div>
-
-      <el-main class="p-4 md:p-6">
-        <RouterView />
-      </el-main>
     </el-container>
   </el-container>
 </template>
@@ -96,10 +91,10 @@ const route = useRoute()
 const activeMenu = computed(() => route.path)
 const currentPageTitle = computed(() => {
   if (route.name === 'Dashboard') {
-    return '经营看板'
+    return '外贸家居经营看板'
   }
 
-  return String(route.name ?? '经营看板')
+  return String(route.name ?? '外贸家居经营看板')
 })
 </script>
 

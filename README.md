@@ -39,7 +39,7 @@ npm run dev
 
 类型检查：
 ```bash
-npx vue-tsc --build
+npm run type-check
 ```
 
 生产构建：
@@ -61,22 +61,26 @@ npm run format
 项目协作和上下文文档：
 - `AGENTS.md`：AI 助手协作规则
 - `docs/CONVENTIONS.md`：项目开发流程和执行规范
-- `docs/WORKING_CONTEXT.md`：当前项目状态、关键决定和下一步
+- `docs/WORKING_CONTEXT.md`：当前项目状态、关键决定、当前进行中需求和需求滚动记录
 
 ## 当前目录结构
 ```text
 src/
   api/
+    modules/
   components/
   composables/
   constants/
   layouts/
   router/
+    modules/
   stores/
+    modules/
   styles/
   types/
   utils/
   views/
+    dashboard/
 ```
 
 当前已经建立的核心入口包括：
@@ -93,4 +97,4 @@ src/
 - 默认包管理工具：`npm`
 - 默认脚手架初始化命令：`npm create vue@latest`
 - 当前构建可通过
-- Element Plus 目前为全量引入，后续可再做按需优化
+- Element Plus 目前为全量引入，构建体积优化问题已记录在 `REQ-20260307-02`

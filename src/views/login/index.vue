@@ -84,6 +84,10 @@ const form = reactive({
   box-shadow: 0 16px 28px rgba(249, 115, 22, 0.2);
 }
 
+:deep(.login-form .el-input__wrapper) {
+  min-height: 48px;
+}
+
 .entry-link {
   border: 1px solid var(--el-button-border-color);
   background: var(--el-bg-color-overlay);

@@ -21,7 +21,6 @@
 }
 
 .el-input__wrapper {
-  min-height: 48px;
   border-radius: var(--el-border-radius-base);
 }
 

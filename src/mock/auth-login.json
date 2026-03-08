@@ -1,0 +1,70 @@
+{
+  "code": 0,
+  "msg": "操作成功",
+  "data": {
+    "demoCredentials": {
+      "account": "mia.chen",
+      "password": "Mia@2026"
+    },
+    "accounts": [
+      {
+        "account": "mia.chen",
+        "password": "Mia@2026",
+        "status": "active",
+        "token": "mock-token-mia-20260308",
+        "expiresInMinutes": 480,
+        "userInfo": {
+          "id": 101,
+          "name": "Mia Chen",
+          "account": "mia.chen",
+          "role": "ops_manager",
+          "email": "mia.chen@furniture-export.test"
+        },
+        "menus": [
+          {
+            "key": "dashboard",
+            "title": "经营看板",
+            "icon": "看",
+            "path": "/"
+          },
+          {
+            "key": "order-tracking",
+            "title": "订单履约追踪",
+            "icon": "单",
+            "path": "/orders/tracking"
+          }
+        ]
+      },
+      {
+        "account": "leo.wang",
+        "password": "Leo@2026",
+        "status": "disabled",
+        "token": "",
+        "expiresInMinutes": 0,
+        "userInfo": {
+          "id": 102,
+          "name": "Leo Wang",
+          "account": "leo.wang",
+          "role": "sales_lead",
+          "email": "leo.wang@furniture-export.test"
+        },
+        "menus": []
+      },
+      {
+        "account": "ava.lin",
+        "password": "Ava@2026",
+        "status": "password_expired",
+        "token": "",
+        "expiresInMinutes": 0,
+        "userInfo": {
+          "id": 103,
+          "name": "Ava Lin",
+          "account": "ava.lin",
+          "role": "merchandiser",
+          "email": "ava.lin@furniture-export.test"
+        },
+        "menus": []
+      }
+    ]
+  }
+}

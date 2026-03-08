@@ -12,3 +12,18 @@ export interface AppMenuItem {
   disabled?: boolean
   children?: AppMenuItem[]
 }
+
+export interface AuthUserInfo {
+  id: number
+  name: string
+  account: string
+  role: string
+  email: string
+}
+
+export interface AuthSession {
+  token: string
+  expiresAt: string
+  rememberMe: boolean
+  userInfo: AuthUserInfo
+}

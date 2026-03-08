@@ -1,7 +1,7 @@
 import { computed, ref } from 'vue'
 import { defineStore } from 'pinia'
 
-import type { AuthSession, AuthUserInfo } from '@/types'
+import type { AppMenuItem, AuthSession, AuthUserInfo } from '@/types'
 import { buildSession, mockLogin } from '@/utils/auth-mock'
 import { clearAuthSession, isSessionExpired, readAuthSession, writeAuthSession } from '@/utils/auth-storage'
 
@@ -16,6 +16,7 @@ interface LoginPayload {
 export const useAuthStore = defineStore('auth', () => {
   const token = ref('')
   const userInfo = ref<AuthUserInfo | null>(null)
+  const menus = ref<AppMenuItem[]>([])
   const expiresAt = ref('')
   const rememberMe = ref(true)
   const authStatus = ref<AuthStatus>('anonymous')
@@ -32,6 +33,7 @@ export const useAuthStore = defineStore('auth', () => {
   function applySession(session: AuthSession) {
     token.value = session.token
     userInfo.value = session.userInfo
+    menus.value = session.menus
     expiresAt.value = session.expiresAt
     rememberMe.value = session.rememberMe
     authStatus.value = isSessionExpired(session.expiresAt) ? 'expired' : 'authenticated'
@@ -44,6 +46,7 @@ export const useAuthStore = defineStore('auth', () => {
   function clearSession() {
     token.value = ''
     userInfo.value = null
+    menus.value = []
     expiresAt.value = ''
     authStatus.value = 'anonymous'
     clearAuthSession()
@@ -97,6 +100,7 @@ export const useAuthStore = defineStore('auth', () => {
   return {
     token,
     userInfo,
+    menus,
     expiresAt,
     rememberMe,
     authStatus,

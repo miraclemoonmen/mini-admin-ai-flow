@@ -61,14 +61,26 @@ import { useRoute } from 'vue-router'
 
 import menuMockResponse from '@/mock/menu.json'
 import { useAppStore } from '@/stores/modules/app'
+import { useAuthStore } from '@/stores/modules/auth'
 import type { AppMenuItem, MockResponse } from '@/types'
 
 const appStore = useAppStore()
+const authStore = useAuthStore()
 const route = useRoute()
 const menuResponse = menuMockResponse as MockResponse<AppMenuItem[]>
-const menuItems = menuResponse.code === 0 ? menuResponse.data : []
+const fallbackMenuItems = menuResponse.code === 0 ? menuResponse.data : []
 
-const activeMenu = computed(() => route.path)
+const menuItems = computed(() =>
+  authStore.menus.length > 0 ? authStore.menus : fallbackMenuItems,
+)
+
+const activeMenu = computed(() => {
+  if (route.path.startsWith('/orders/tracking/')) {
+    return '/orders/tracking'
+  }
+
+  return route.path
+})
 </script>
 
 <style scoped>

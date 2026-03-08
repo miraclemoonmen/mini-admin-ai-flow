@@ -26,4 +26,5 @@ export interface AuthSession {
   expiresAt: string
   rememberMe: boolean
   userInfo: AuthUserInfo
+  menus: AppMenuItem[]
 }

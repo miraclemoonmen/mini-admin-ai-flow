@@ -1,6 +1,6 @@
 import type { AppMenuItem } from '@/types'
 
-import { routeCatalog } from './route-catalog'
+import { createPathMatcher, getKnownBusinessPathMatchers } from './route-catalog'
 
 function flattenMenuItems(items: AppMenuItem[] = []) {
   const result: AppMenuItem[] = []
@@ -14,33 +14,6 @@ function flattenMenuItems(items: AppMenuItem[] = []) {
   }
 
   return result
-}
-
-function escapeRegExp(value: string) {
-  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
-}
-
-function createPathMatcher(pattern: string) {
-  if (pattern === '/') {
-    return /^\/$/
-  }
-
-  const matcherSource = pattern
-    .split('/')
-    .map((segment, index) => {
-      if (index === 0) {
-        return ''
-      }
-
-      if (segment.startsWith(':')) {
-        return '[^/]+'
-      }
-
-      return escapeRegExp(segment)
-    })
-    .join('/')
-
-  return new RegExp(`^${matcherSource}$`)
 }
 
 function matchesPathPattern(path: string, pattern: string) {
@@ -76,9 +49,7 @@ export function getFirstAccessiblePath(items: AppMenuItem[] = []) {
 }
 
 export function isKnownBusinessPath(path: string) {
-  return routeCatalog.some((item) =>
-    item.knownPathMatchers.some((matcher) => matcher.test(path)),
-  )
+  return getKnownBusinessPathMatchers().some((matcher) => matcher.test(path))
 }
 
 export function canAccessPath(path: string, items: AppMenuItem[] = []) {

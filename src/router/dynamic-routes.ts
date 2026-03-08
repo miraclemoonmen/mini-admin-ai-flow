@@ -2,7 +2,7 @@ import type { RouteRecordName, Router } from 'vue-router'
 
 import type { AppMenuItem } from '@/types'
 
-import { dynamicRouteMap } from './route-catalog'
+import { getRouteFactoryByPath } from './route-catalog'
 import { getAccessibleMenuPaths } from './route-access'
 
 function hasNamedRoute(router: Router, name?: RouteRecordName) {
@@ -17,7 +17,7 @@ export function ensureDynamicRoutes(router: Router, items: AppMenuItem[] = []) {
   const uniquePaths = getAccessibleMenuPaths(items)
 
   for (const path of uniquePaths) {
-    const createRoutes = dynamicRouteMap[path]
+    const createRoutes = getRouteFactoryByPath(path)
 
     if (!createRoutes) {
       continue

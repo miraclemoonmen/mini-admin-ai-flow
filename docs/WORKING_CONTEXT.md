@@ -72,7 +72,7 @@
 - 已确认方案：先完成最小文档体系和初始化骨架，再继续推进目录结构整理、基础模块补齐和基础设施建设
 - 计划改动点：审视当前目录结构差异，补齐模块骨架，逐步进入认证、权限、路由守卫和请求拦截等基础设施工作
 - 预计涉及文件：`src/` 下目录结构与基础设施相关文件
-- 实际改动文件：截至目前累计包括 `docs/WORKING_CONTEXT.md`、`README.md`、`src/main.ts`、`src/layouts/AppLayout.vue`、`src/layouts/components/AppHeader.vue`、`src/layouts/components/AppSidebar.vue`、`src/router/index.ts`、`src/router/modules/auth.ts`、`src/router/dynamic-routes.ts`、`src/router/route-catalog.ts`、`src/router/route-access.ts`、`src/api/modules/auth.ts`、`src/api/modules/order-fulfillment.ts`、`src/stores/modules/auth.ts`、`src/utils/auth-storage.ts`、`src/types/index.ts`、`src/composables/use-order-fulfillment-list.ts`、`src/views/dashboard/index.vue`、`src/views/login/index.vue`、`src/views/order-fulfillment/index.vue`、`src/views/order-fulfillment/detail.vue`、`src/styles/element-theme.css`、`src/styles/element-overrides.css`
+- 实际改动文件：截至目前累计包括 `docs/WORKING_CONTEXT.md`、`README.md`、`src/main.ts`、`src/layouts/AppLayout.vue`、`src/layouts/components/AppHeader.vue`、`src/layouts/components/AppSidebar.vue`、`src/router/index.ts`、`src/router/modules/auth.ts`、`src/router/dynamic-routes.ts`、`src/router/route-catalog.ts`、`src/router/route-access.ts`、`src/api/modules/auth.ts`、`src/api/modules/order-fulfillment.ts`、`src/stores/modules/auth.ts`、`src/utils/auth-storage.ts`、`src/types/index.ts`、`src/composables/use-order-fulfillment-list.ts`、`src/composables/order-fulfillment/query-schema.ts`、`src/composables/order-fulfillment/query-route.ts`、`src/views/dashboard/index.vue`、`src/views/login/index.vue`、`src/views/order-fulfillment/index.vue`、`src/views/order-fulfillment/detail.vue`、`src/styles/element-theme.css`、`src/styles/element-overrides.css`
 - 验证结果：已完成最小文档体系、项目初始化、Element Plus、Tailwind CSS 4、Axios、基础布局与 dashboard 骨架；最近一次主题与样式分层收敛已通过 `npm run type-check`、`npm run build-only`
 - 遗留问题：仍需补齐更完整的模块目录骨架，设计认证与权限基础设施，处理 Element Plus 全量引入带来的构建体积问题
 - 记录：
@@ -123,6 +123,10 @@
     - 2026-03-08 开始实现：计划新增 `src/api/modules/order-fulfillment.ts` 统一承接订单列表与详情 mock 访问，再新增 `src/composables/use-order-fulfillment-list.ts` 托管列表页的筛选、分页和 URL 同步逻辑；列表页和详情页只保留展示与轻量格式化职责。
     - 2026-03-08 完成：已新增订单履约 API 模块和列表页 composable，订单列表与详情页不再直接读取底层 mock JSON；列表页的筛选、分页和 URL 同步已从页面脚本中抽离，详情页也改为通过 API 模块获取订单摘要和详情数据。
     - 2026-03-08 验证：已通过 `npm run type-check`，并复查订单履约列表与详情页的 mock 访问入口已统一收口到 `src/api/modules/order-fulfillment.ts`。
+    - 2026-03-08 后续追加：进一步复核后确认订单列表 composable 仍然过重，且路由目录仍存在 `path / knownPathMatchers / dynamicRouteMap` 三处并行维护的问题，需要继续做一次结构收口。
+    - 2026-03-08 开始实现：计划将订单列表逻辑继续拆成 `query-schema / query-route / use-order-fulfillment-list` 三层，并让动态路由注册与已知路径判断都从同一份 `route-catalog` 派生，减少重复事实来源。
+    - 2026-03-08 完成：已将订单列表查询模型继续拆为 `query-schema / query-route / use-order-fulfillment-list` 三层，列表 composable 只保留组合与筛选主逻辑；同时将动态路由注册映射和已知路径判断统一改为从同一份 `route-catalog` 派生，不再单独维护并行的路径定义。
+    - 2026-03-08 验证：已通过 `npm run type-check` 和 `npm run build-only`；构建仍提示主包 chunk 偏大，该问题继续保留在主线遗留问题中。
 
 ### REQ-20260308-01 协作文档工作流与编码规则收敛
 - 需求编号：REQ-20260308-01

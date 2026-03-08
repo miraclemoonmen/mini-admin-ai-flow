@@ -355,117 +355,17 @@
 import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
-import orderDetailResponse from '@/mock/order-fulfillment-detail.json'
-import rawOrders from '@/mock/order-fulfillment.json'
-import type { MockResponse } from '@/types'
+import {
+  getOrderFulfillmentDetailById,
+  getOrderFulfillmentOrderById,
+} from '@/api/modules/order-fulfillment'
 
-type OrderItem = (typeof rawOrders)[number]
-
-interface OrderOverview {
-  priorityLevel: string
-  buyerTier: string
-  regionManager: string
-  orderAgingDays: number
-  expectedGrossMargin: number
-  deliveryPressure: string
-  latestException: string
-  nextAction: string
-}
-
-interface MilestoneItem {
-  stage: string
-  status: string
-  owner: string
-  actualDate: string
-  targetDate: string
-  note: string
-}
-
-interface ProductItem {
-  sku: string
-  productName: string
-  specification: string
-  material: string
-  quantity: number
-  unitPrice: number
-  cartons: number
-  volume: number
-}
-
-interface PaymentSummary {
-  depositRatio: number
-  depositAmount: number
-  balanceAmount: number
-  settlementMethod: string
-  dutyMode: string
-  financeRisk: string
-}
-
-interface PaymentItem {
-  node: string
-  amount: number
-  dueDate: string
-  receivedDate: string
-  status: string
-}
-
-interface FeeItem {
-  label: string
-  amount: number
-}
-
-interface LogisticsInfo {
-  incoterm: string
-  shippingMethod: string
-  loadingPort: string
-  destinationPort: string
-  containerType: string
-  bookingNo: string
-  blNo: string
-  customsStatus: string
-  trailerStatus: string
-  warehouseStatus: string
-}
-
-interface DocumentItem {
-  name: string
-  status: string
-  owner: string
-  note: string
-}
-
-interface FollowUpItem {
-  time: string
-  owner: string
-  channel: string
-  summary: string
-  nextStep: string
-}
-
-interface OrderDetailRecord {
-  id: number
-  overview: OrderOverview
-  milestones: MilestoneItem[]
-  products: ProductItem[]
-  paymentSummary: PaymentSummary
-  payments: PaymentItem[]
-  fees: FeeItem[]
-  logistics: LogisticsInfo
-  documents: DocumentItem[]
-  followUps: FollowUpItem[]
-}
-
-const detailResponse = orderDetailResponse as MockResponse<OrderDetailRecord[]>
 const route = useRoute()
 const router = useRouter()
 
 const orderId = computed(() => Number.parseInt(`${route.params.id ?? ''}`, 10))
-const order = computed<OrderItem | undefined>(() =>
-  rawOrders.find((item) => item.id === orderId.value),
-)
-const detailRecord = computed<OrderDetailRecord | undefined>(() =>
-  detailResponse.code === 0 ? detailResponse.data.find((item) => item.id === orderId.value) : undefined,
-)
+const order = computed(() => getOrderFulfillmentOrderById(orderId.value))
+const detailRecord = computed(() => getOrderFulfillmentDetailById(orderId.value))
 
 function goBack() {
   if (window.history.length > 1) {

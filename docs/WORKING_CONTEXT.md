@@ -72,7 +72,7 @@
 - 已确认方案：先完成最小文档体系和初始化骨架，再继续推进目录结构整理、基础模块补齐和基础设施建设
 - 计划改动点：审视当前目录结构差异，补齐模块骨架，逐步进入认证、权限、路由守卫和请求拦截等基础设施工作
 - 预计涉及文件：`src/` 下目录结构与基础设施相关文件
-- 实际改动文件：截至目前累计包括 `docs/WORKING_CONTEXT.md`、`README.md`、`src/main.ts`、`src/layouts/AppLayout.vue`、`src/layouts/components/AppHeader.vue`、`src/layouts/components/AppSidebar.vue`、`src/router/index.ts`、`src/router/modules/auth.ts`、`src/router/dynamic-routes.ts`、`src/router/route-catalog.ts`、`src/router/route-access.ts`、`src/api/modules/auth.ts`、`src/stores/modules/auth.ts`、`src/utils/auth-storage.ts`、`src/types/index.ts`、`src/views/dashboard/index.vue`、`src/views/login/index.vue`、`src/styles/element-theme.css`、`src/styles/element-overrides.css`
+- 实际改动文件：截至目前累计包括 `docs/WORKING_CONTEXT.md`、`README.md`、`src/main.ts`、`src/layouts/AppLayout.vue`、`src/layouts/components/AppHeader.vue`、`src/layouts/components/AppSidebar.vue`、`src/router/index.ts`、`src/router/modules/auth.ts`、`src/router/dynamic-routes.ts`、`src/router/route-catalog.ts`、`src/router/route-access.ts`、`src/api/modules/auth.ts`、`src/api/modules/order-fulfillment.ts`、`src/stores/modules/auth.ts`、`src/utils/auth-storage.ts`、`src/types/index.ts`、`src/composables/use-order-fulfillment-list.ts`、`src/views/dashboard/index.vue`、`src/views/login/index.vue`、`src/views/order-fulfillment/index.vue`、`src/views/order-fulfillment/detail.vue`、`src/styles/element-theme.css`、`src/styles/element-overrides.css`
 - 验证结果：已完成最小文档体系、项目初始化、Element Plus、Tailwind CSS 4、Axios、基础布局与 dashboard 骨架；最近一次主题与样式分层收敛已通过 `npm run type-check`、`npm run build-only`
 - 遗留问题：仍需补齐更完整的模块目录骨架，设计认证与权限基础设施，处理 Element Plus 全量引入带来的构建体积问题
 - 记录：
@@ -115,6 +115,14 @@
   - 2026-03-08 开始实现：计划仅移除标题块中的副文案，保留当前圆点装饰与主标题结构，不再扩展其他头部改动。
   - 2026-03-08 完成：已移除标题块中的无效副文案，头部左侧现仅保留圆点装饰与当前页面主标题。
   - 2026-03-08 验证：已通过 `npm run type-check`。
+    - 2026-03-08 后续追加：用户反馈登录成功后的全局 success message 与当前暖色登录页和立即跳转的交互场景不匹配，希望移除该提示。
+    - 2026-03-08 开始实现：计划仅删除登录成功后的 `ElMessage.success`，保留失败提示和既有登录跳转逻辑不变。
+    - 2026-03-08 完成：已移除登录成功后的全局 success message，登录成功时改为直接跳转，仅保留失败场景下的错误提示。
+    - 2026-03-08 验证：已通过 `npm run type-check`。
+    - 2026-03-08 后续追加：结合当前代码状态确认订单履约链路仍然由页面直接读取 mock JSON，筛选、URL 同步和分页逻辑也集中在单页组件中，下一步优先将这条业务链收口到 `mock -> api -> composable -> page` 结构。
+    - 2026-03-08 开始实现：计划新增 `src/api/modules/order-fulfillment.ts` 统一承接订单列表与详情 mock 访问，再新增 `src/composables/use-order-fulfillment-list.ts` 托管列表页的筛选、分页和 URL 同步逻辑；列表页和详情页只保留展示与轻量格式化职责。
+    - 2026-03-08 完成：已新增订单履约 API 模块和列表页 composable，订单列表与详情页不再直接读取底层 mock JSON；列表页的筛选、分页和 URL 同步已从页面脚本中抽离，详情页也改为通过 API 模块获取订单摘要和详情数据。
+    - 2026-03-08 验证：已通过 `npm run type-check`，并复查订单履约列表与详情页的 mock 访问入口已统一收口到 `src/api/modules/order-fulfillment.ts`。
 
 ### REQ-20260308-01 协作文档工作流与编码规则收敛
 - 需求编号：REQ-20260308-01

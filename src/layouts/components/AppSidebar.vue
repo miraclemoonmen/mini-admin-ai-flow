@@ -57,19 +57,14 @@
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 
-import menuMockResponse from '@/mock/menu.json'
 import { getVisibleMenuItems, resolveActiveMenuPath } from '@/router/route-access'
 import { useAuthStore } from '@/stores/modules/auth'
-import type { AppMenuItem, MockResponse } from '@/types'
+import type { AppMenuItem } from '@/types'
 
 const authStore = useAuthStore()
 const route = useRoute()
-const menuResponse = menuMockResponse as MockResponse<AppMenuItem[]>
-const fallbackMenuItems = menuResponse.code === 0 ? menuResponse.data : []
 
-const menuItems = computed(() =>
-  authStore.menus.length > 0 ? authStore.menus : fallbackMenuItems,
-)
+const menuItems = computed<AppMenuItem[]>(() => authStore.menus)
 
 const visibleMenuItems = computed(() => getVisibleMenuItems(menuItems.value))
 

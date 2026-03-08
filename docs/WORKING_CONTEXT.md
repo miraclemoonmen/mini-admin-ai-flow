@@ -267,7 +267,7 @@
 - 已确认方案：采用 Pinia + localStorage 管理认证状态，mock 数据覆盖账号不存在、密码错误、账号禁用、密码过期和登录成功等场景，并通过路由守卫完成未登录拦截和登录后重定向
 - 计划改动点：新增认证 mock 与认证工具；新增 auth store；改造登录页为可提交表单；新增登录态恢复与路由守卫；保留菜单相关能力仅作为后续扩展，不在本轮接入
 - 预计涉及文件：`docs/WORKING_CONTEXT.md`、`src/mock/auth-login.json`、`src/stores/modules/auth.ts`、`src/utils/auth-storage.ts`、`src/views/login/index.vue`、`src/router/index.ts`、`src/layouts/components/AppHeader.vue`
-- 实际改动文件：`docs/WORKING_CONTEXT.md`、`src/mock/auth-login.json`、`src/stores/modules/auth.ts`、`src/types/index.ts`、`src/utils/auth-storage.ts`、`src/utils/auth-mock.ts`、`src/views/login/index.vue`、`src/router/index.ts`、`src/layouts/components/AppHeader.vue`
+- 实际改动文件：`docs/WORKING_CONTEXT.md`、`src/mock/auth-login.json`、`src/stores/modules/auth.ts`、`src/types/index.ts`、`src/utils/auth-storage.ts`、`src/utils/auth-mock.ts`、`src/views/login/index.vue`、`src/views/403/index.vue`、`src/views/404/index.vue`、`src/router/index.ts`、`src/router/dynamic-routes.ts`、`src/router/modules/dashboard.ts`、`src/router/modules/fulfillment.ts`、`src/layouts/components/AppHeader.vue`、`src/layouts/components/AppSidebar.vue`
 - 验证结果：已通过 `npm run type-check`
 - 遗留问题：当前认证仍为本地 mock，会话只做前端持久化与失效判断；后续若接真实接口，还需补充服务端 token 校验、刷新机制和更细粒度的权限模型
 - 记录：
@@ -294,6 +294,32 @@
   - 2026-03-08 后续追加：用户确认当前 `user-card` 的边框略显多余，希望仅移除边框，其余样式保持不变。
   - 2026-03-08 开始实现：计划仅删除 `AppHeader` 中 `user-card` 的边框，不调整背景、阴影、间距和按钮样式。
   - 2026-03-08 完成：已移除后台右上角 `user-card` 的外边框，其余视觉样式保持不变。
+  - 2026-03-08 后续追加：用户确认菜单和业务页路由都应基于登录返回的 `menus` 驱动，除登录页外的后台业务路由改为动态注册。
+  - 2026-03-08 方案确认：确认本轮按“动态业务路由版”推进，保留 `/login` 为静态路由，后台壳静态保留，业务子路由和侧栏菜单统一从登录返回的 `menus` 派生；暂不扩展到权限码体系和按钮级权限。
+  - 2026-03-08 开始实现：计划将认证会话纳入 `menus`，新增幂等动态路由注册函数与路径组件映射表，在登录成功和刷新恢复时都执行一次去重注册，并让侧栏优先读取当前用户菜单。
+  - 2026-03-08 完成：已将认证会话扩展为包含 `menus`，新增幂等动态路由注册函数；登录成功和刷新恢复后都会基于当前用户菜单补注册后台业务路由，侧栏也会优先读取当前用户菜单数据。
+  - 2026-03-08 验证：已通过 `npm run type-check`。
+  - 2026-03-08 后续追加：用户确认需要补充 `403 / 404` 页面，并要求在已登录场景下区分“系统存在但当前用户无菜单权限”和“系统根本不存在”的路径访问。
+  - 2026-03-08 方案确认：确认保留登录页承担 `401` 语义，不额外单做 `401` 页面；新增静态 `403 / 404` 页面，并基于系统级业务路径映射表区分无权限访问和不存在路由。
+  - 2026-03-08 开始实现：计划新增 `403 / 404` 页面与静态路由，在动态路由映射表中补充系统已知路径判断与访问判断逻辑，并在守卫中将无权限访问分流到 `403`、未知路径分流到 `404`。
+  - 2026-03-08 后续追加：用户确认需要新增一个仅拥有“经营看板”菜单的演示账号，用于验证菜单和动态业务路由收口效果。
+  - 2026-03-08 开始实现：计划仅调整认证 mock 数据，追加一个 `menus` 只包含看板路径的新账号，不改动登录逻辑和路由逻辑。
+  - 2026-03-08 完成：已在认证 mock 中新增账号 `dashboard.only / Dash@2026`，其 `menus` 仅保留“经营看板”菜单。
+  - 2026-03-08 后续追加：用户确认主账号 `Mia Chen` 需要恢复更丰富的菜单结构，用于接近原先后台效果，但暂不开放未实现页面点击。
+  - 2026-03-08 开始实现：计划仅扩充 `mia.chen` 在认证 mock 中的 `menus` 结构，为未实现页面补充 `disabled: true` 占位项，不改动路由和登录逻辑。
+  - 2026-03-08 完成：已将 `Mia Chen` 的菜单补充为包含“经营看板 / 产品选品 / 订单履约追踪 / 灵感中心”及其子项的丰富结构，其中未实现页面继续保持不可点击。
+  - 2026-03-08 后续追加：用户确认登录页需要新增一个账号切换按钮组，用于在 `Mia Chen` 与 `dashboard.only` 两个演示账号之间切换，且默认选中 `Mia Chen`。
+  - 2026-03-08 开始实现：计划仅调整登录页交互，新增两个演示账号切换按钮，点击时只回填输入框中的账号密码，不改变现有登录逻辑。
+  - 2026-03-08 完成：已在登录页新增 `Mia Chen / Dashboard Only` 两个演示账号切换按钮，默认按当前表单值高亮 `Mia Chen`，点击只会切换输入框中的账号密码。
+  - 2026-03-08 后续追加：用户确认需要补充 `403 / 404` 页面，并要求在已登录场景下区分“系统存在但当前用户无菜单权限”和“系统根本不存在”的路径访问。
+  - 2026-03-08 方案确认：确认保留登录页承担 `401` 语义，不额外单做 `401` 页面；新增静态 `403 / 404` 页面，并基于系统级业务路径映射表区分无权限访问和不存在路由。
+  - 2026-03-08 开始实现：计划新增 `403 / 404` 页面与静态路由，在动态路由映射表中补充系统已知路径判断与访问判断逻辑，并在守卫中将无权限访问分流到 `403`、未知路径分流到 `404`。
+  - 2026-03-08 完成：已新增 `403 / 404` 页面，并在守卫中基于系统已知业务路径和当前用户菜单做访问分流；未登录继续跳登录页，已登录但无菜单权限访问已知业务路径时进入 `403`，系统未知路径进入 `404`。
+  - 2026-03-08 验证：已通过 `npm run type-check`。
+  - 2026-03-08 后续追加：审查 `src/router` 目录后确认，`dashboard.ts` 与 `fulfillment.ts` 已不再作为实际业务路由来源，继续保留会与 `dynamic-routes.ts` 形成双重真相。
+  - 2026-03-08 开始实现：计划仅做 router 目录收口，删除失效的业务路由模块文件，保留 `auth.ts`、`index.ts` 和 `dynamic-routes.ts` 的现有职责，不调整任何路由行为。
+  - 2026-03-08 完成：已删除 `src/router/modules/dashboard.ts` 与 `src/router/modules/fulfillment.ts`，收口 router 目录中失效的业务路由模块，避免与 `src/router/dynamic-routes.ts` 继续形成双重事实来源。
+  - 2026-03-08 验证：已复查项目内无残留 `dashboardRoutes / fulfillmentRoutes` 或对应模块路径引用，并通过 `npm run type-check`。
 
 
 

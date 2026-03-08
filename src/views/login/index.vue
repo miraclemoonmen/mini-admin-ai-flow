@@ -161,7 +161,7 @@
 <script setup lang="ts">
 import { reactive, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { ElMessage, type FormInstance, type FormRules } from 'element-plus'
+import { type FormInstance, type FormRules } from 'element-plus'
 
 import { getDemoCredentials, getSwitchableDemoAccounts } from '@/api/modules/auth'
 import { useAuthStore } from '@/stores/modules/auth'
@@ -264,8 +264,6 @@ async function handleLogin() {
       errorMessage.value = result.msg
       return
     }
-
-    ElMessage.success('登录成功')
 
     const redirect = typeof route.query.redirect === 'string' ? route.query.redirect : '/'
     await router.replace(redirect)

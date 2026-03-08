@@ -208,5 +208,31 @@
   - 2026-03-08 后续追加：确认 URL 中不再直接存中文枚举文案，改为存稳定 code，以提升链接可读性和后续维护性。
   - 2026-03-08 开始实现：计划保留页面中文展示不变，仅调整订单履约页 query 的序列化与反序列化映射，让枚举筛选条件改用 code 存入 URL，并在完成后重新验证。
 
+### REQ-20260308-05 侧栏菜单改为 Mock 驱动的动态渲染
+- 需求编号：REQ-20260308-05
+- 需求名称：侧栏菜单改为 Mock 驱动的动态渲染
+- 需求目标：将后台侧栏从写死菜单项改为基于 mock 数据动态渲染，并统一 mock 响应结构为 `code / msg / data`
+- 需求范围：新增菜单 mock 数据与类型；改造 `AppSidebar` 为动态渲染；当前不扩展到动态路由生成
+- 已知约束：实现前需完成需求记录初始化；菜单 mock 响应结构统一为 `{ code: 0, msg: '操作成功', data: [...] }`；本轮仅做菜单动态，路由仍保持静态模块
+- 当前状态：进行中 [ ]
+- 已确认方案：新增菜单 mock 数据和共享类型，侧栏在组件内读取 mock 响应并按单层菜单 / 子菜单动态渲染，菜单项仍复用现有路由路径
+- 计划改动点：新增菜单 mock 数据文件；补充菜单与通用响应类型；改造 `AppSidebar` 读取 mock 数据并渲染 `el-menu-item / el-sub-menu`
+- 预计涉及文件：`docs/WORKING_CONTEXT.md`、`src/layouts/components/AppSidebar.vue`、`src/mock/menu.json`、`src/types/index.ts`
+- 实际改动文件：`docs/WORKING_CONTEXT.md`、`src/layouts/components/AppSidebar.vue`、`src/mock/menu.json`、`src/types/index.ts`
+- 验证结果：已通过 `npm run type-check`
+- 遗留问题：当前仅完成菜单动态渲染，尚未扩展到基于菜单 mock 的动态路由生成或权限控制
+- 记录：
+  - 2026-03-08 开始确认：用户提出将侧栏菜单改为动态菜单，并要求先使用 mock 数据驱动。
+  - 2026-03-08 方案确认：确认本轮只做“菜单动态、路由静态”，并统一 mock 返回结构为 `code: 0`、`msg: '操作成功'`、`data` 承载具体菜单数据。
+  - 2026-03-08 开始实现：已先完成需求初始化记录，计划新增菜单 mock 与类型后改造侧栏动态渲染，并在完成后补充验证结果。
+  - 2026-03-08 完成：已新增统一 `code / msg / data` 结构的菜单 mock，并将 `AppSidebar` 改为根据 mock 数据动态渲染单层菜单与子菜单。
+  - 2026-03-08 验证：已通过 `npm run type-check`。
+  - 2026-03-08 后续追加：用户确认将菜单 mock 进一步抽离为独立 JSON 文件，同时保留 `code / msg / data` 响应结构。
+  - 2026-03-08 开始实现：计划将菜单 mock 从 TypeScript 常量迁移为 JSON 文件，并调整侧栏改为读取 JSON 响应数据后继续渲染。
+  - 2026-03-08 完成：已将菜单 mock 抽离为 `src/mock/menu.json`，并保持 `code / msg / data` 结构不变；侧栏继续通过响应中的 `data` 动态渲染菜单。
+  - 2026-03-08 追加验证：已通过 `npm run type-check`。
+  - 2026-03-08 后续追加：用户确认将菜单 mock 进一步抽离为独立 JSON 文件，同时保留 `code / msg / data` 响应结构。
+  - 2026-03-08 开始实现：计划将菜单 mock 从 TypeScript 常量迁移为 JSON 文件，并调整侧栏改为读取 JSON 响应数据后继续渲染。
+
 
 

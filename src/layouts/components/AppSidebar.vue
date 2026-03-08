@@ -24,26 +24,32 @@
         :collapse-transition="false"
         router
       >
-        <el-menu-item index="/">
-          <div class="menu-icon" aria-hidden="true">看</div>
-          <span class="menu-label">经营看板</span>
-        </el-menu-item>
-        <el-menu-item index="/products" disabled>
-          <div class="menu-icon" aria-hidden="true">品</div>
-          <span class="menu-label">产品选品</span>
-        </el-menu-item>
-        <el-menu-item index="/orders/tracking">
-          <div class="menu-icon" aria-hidden="true">单</div>
-          <span class="menu-label">订单履约追踪</span>
-        </el-menu-item>
-        <el-sub-menu index="workspace">
-          <template #title>
-            <div class="menu-icon" aria-hidden="true">灵</div>
-            <span class="menu-label">灵感中心</span>
-          </template>
-          <el-menu-item index="/workspace/reports" disabled>市场洞察</el-menu-item>
-          <el-menu-item index="/workspace/audit" disabled>买家反馈</el-menu-item>
-        </el-sub-menu>
+        <template v-for="item in menuItems" :key="item.key">
+          <el-sub-menu v-if="item.children?.length" :index="item.key">
+            <template #title>
+              <div class="menu-icon" aria-hidden="true">{{ item.icon }}</div>
+              <span class="menu-label">{{ item.title }}</span>
+            </template>
+
+            <el-menu-item
+              v-for="child in item.children"
+              :key="child.key"
+              :index="child.path || child.key"
+              :disabled="child.disabled"
+            >
+              {{ child.title }}
+            </el-menu-item>
+          </el-sub-menu>
+
+          <el-menu-item
+            v-else
+            :index="item.path || item.key"
+            :disabled="item.disabled"
+          >
+            <div class="menu-icon" aria-hidden="true">{{ item.icon }}</div>
+            <span class="menu-label">{{ item.title }}</span>
+          </el-menu-item>
+        </template>
       </el-menu>
     </div>
   </el-aside>
@@ -53,10 +59,14 @@
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 
+import menuMockResponse from '@/mock/menu.json'
 import { useAppStore } from '@/stores/modules/app'
+import type { AppMenuItem, MockResponse } from '@/types'
 
 const appStore = useAppStore()
 const route = useRoute()
+const menuResponse = menuMockResponse as MockResponse<AppMenuItem[]>
+const menuItems = menuResponse.code === 0 ? menuResponse.data : []
 
 const activeMenu = computed(() => route.path)
 </script>

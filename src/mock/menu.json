@@ -1,0 +1,46 @@
+{
+  "code": 0,
+  "msg": "操作成功",
+  "data": [
+    {
+      "key": "dashboard",
+      "title": "经营看板",
+      "icon": "看",
+      "path": "/"
+    },
+    {
+      "key": "products",
+      "title": "产品选品",
+      "icon": "品",
+      "path": "/products",
+      "disabled": true
+    },
+    {
+      "key": "order-tracking",
+      "title": "订单履约追踪",
+      "icon": "单",
+      "path": "/orders/tracking"
+    },
+    {
+      "key": "workspace",
+      "title": "灵感中心",
+      "icon": "灵",
+      "children": [
+        {
+          "key": "workspace-reports",
+          "title": "市场洞察",
+          "icon": "市",
+          "path": "/workspace/reports",
+          "disabled": true
+        },
+        {
+          "key": "workspace-audit",
+          "title": "买家反馈",
+          "icon": "买",
+          "path": "/workspace/audit",
+          "disabled": true
+        }
+      ]
+    }
+  ]
+}

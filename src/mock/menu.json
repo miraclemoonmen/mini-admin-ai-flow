@@ -22,6 +22,14 @@
       "path": "/orders/tracking"
     },
     {
+      "key": "order-tracking-detail",
+      "title": "订单履约详情",
+      "icon": "详",
+      "path": "/orders/tracking/:id",
+      "visibleInMenu": false,
+      "activeMenuPath": "/orders/tracking"
+    },
+    {
       "key": "workspace",
       "title": "灵感中心",
       "icon": "灵",

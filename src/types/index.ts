@@ -10,6 +10,8 @@ export interface AppMenuItem {
   icon: string
   path?: string
   disabled?: boolean
+  visibleInMenu?: boolean
+  activeMenuPath?: string
   children?: AppMenuItem[]
 }
 

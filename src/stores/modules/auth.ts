@@ -2,7 +2,7 @@ import { computed, ref } from 'vue'
 import { defineStore } from 'pinia'
 
 import type { AppMenuItem, AuthSession, AuthUserInfo } from '@/types'
-import { buildSession, mockLogin } from '@/utils/auth-mock'
+import { buildAuthSession, loginByMock } from '@/api/modules/auth'
 import { clearAuthSession, isSessionExpired, readAuthSession, writeAuthSession } from '@/utils/auth-storage'
 
 type AuthStatus = 'anonymous' | 'authenticated' | 'expired'
@@ -77,7 +77,7 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   async function login(payload: LoginPayload) {
-    const result = await mockLogin({
+    const result = await loginByMock({
       account: payload.account,
       password: payload.password,
     })
@@ -86,7 +86,7 @@ export const useAuthStore = defineStore('auth', () => {
       return result
     }
 
-    const session = buildSession(result.data, payload.rememberMe)
+    const session = buildAuthSession(result.data, payload.rememberMe)
     applySession(session)
     writeAuthSession(session)
 

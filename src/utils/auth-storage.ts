@@ -6,6 +6,40 @@ function isClient() {
   return typeof window !== 'undefined'
 }
 
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null
+}
+
+function normalizeAuthSession(value: unknown): AuthSession | null {
+  if (!isRecord(value)) {
+    return null
+  }
+
+  const token = typeof value.token === 'string' ? value.token : ''
+  const expiresAt = typeof value.expiresAt === 'string' ? value.expiresAt : ''
+  const rememberMe = typeof value.rememberMe === 'boolean' ? value.rememberMe : true
+  const userInfo = isRecord(value.userInfo) ? value.userInfo : null
+  const menus = Array.isArray(value.menus) ? value.menus : []
+
+  if (!token || !expiresAt || !userInfo) {
+    return null
+  }
+
+  return {
+    token,
+    expiresAt,
+    rememberMe,
+    userInfo: {
+      id: typeof userInfo.id === 'number' ? userInfo.id : 0,
+      name: typeof userInfo.name === 'string' ? userInfo.name : '',
+      account: typeof userInfo.account === 'string' ? userInfo.account : '',
+      role: typeof userInfo.role === 'string' ? userInfo.role : '',
+      email: typeof userInfo.email === 'string' ? userInfo.email : '',
+    },
+    menus,
+  }
+}
+
 export function readAuthSession() {
   if (!isClient()) {
     return null
@@ -20,9 +54,16 @@ export function readAuthSession() {
   }
 
   try {
-    return JSON.parse(raw) as AuthSession
+    const parsed = normalizeAuthSession(JSON.parse(raw))
+
+    if (!parsed) {
+      clearAuthSession()
+      return null
+    }
+
+    return parsed
   } catch {
-    window.localStorage.removeItem(AUTH_STORAGE_KEY)
+    clearAuthSession()
     return null
   }
 }

@@ -163,8 +163,8 @@ import { reactive, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { ElMessage, type FormInstance, type FormRules } from 'element-plus'
 
+import { getDemoCredentials, getSwitchableDemoAccounts } from '@/api/modules/auth'
 import { useAuthStore } from '@/stores/modules/auth'
-import { getDemoCredentials, getSwitchableDemoAccounts } from '@/utils/auth-mock'
 
 interface LoginForm {
   account: string

@@ -21,19 +21,25 @@ interface AuthMockPayload {
   accounts: AuthAccountRecord[]
 }
 
-interface LoginSuccessData {
+export interface LoginCredentials {
+  account: string
+  password: string
+}
+
+export interface DemoAccountOption {
+  account: string
+  password: string
+  label: string
+}
+
+export interface LoginSuccessData {
   token: string
   expiresAt: string
   userInfo: AuthUserInfo
   menus: AppMenuItem[]
 }
 
-interface LoginCredentials {
-  account: string
-  password: string
-}
-
-interface LoginResult {
+export interface LoginResult {
   code: number
   msg: string
   data: LoginSuccessData | null
@@ -52,19 +58,14 @@ export function getDemoCredentials() {
 export function getSwitchableDemoAccounts() {
   return authPayload.data.accounts
     .filter((item) => ['mia.chen', 'dashboard.only'].includes(item.account))
-    .map((item) => ({
+    .map<DemoAccountOption>((item) => ({
       account: item.account,
       password: item.password,
       label: item.userInfo.name,
     }))
 }
 
-export function getDefaultUserMenus() {
-  const firstActiveAccount = authPayload.data.accounts.find((item) => item.status === 'active')
-  return firstActiveAccount?.menus ?? []
-}
-
-export async function mockLogin(credentials: LoginCredentials): Promise<LoginResult> {
+export async function loginByMock(credentials: LoginCredentials): Promise<LoginResult> {
   const account = credentials.account.trim().toLowerCase()
   const password = credentials.password
 
@@ -116,7 +117,7 @@ export async function mockLogin(credentials: LoginCredentials): Promise<LoginRes
   }
 }
 
-export function buildSession(data: LoginSuccessData, rememberMe: boolean): AuthSession {
+export function buildAuthSession(data: LoginSuccessData, rememberMe: boolean): AuthSession {
   return {
     token: data.token,
     expiresAt: data.expiresAt,

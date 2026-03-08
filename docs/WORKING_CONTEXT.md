@@ -35,9 +35,9 @@
 - 当前无阻塞项
 
 ## 当前下一步
-- [ ] REQ-20260307-02：审视当前目录结构与既定规范的差异
 - [ ] REQ-20260307-02：补齐基础模块目录骨架
 - [ ] REQ-20260307-02：进入登录态、路由守卫、请求拦截等基础设施建设
+- [ ] REQ-20260307-02：评估 Element Plus 全量引入带来的构建体积问题并制定收敛方案
 
 ## 需求记录
 
@@ -70,14 +70,18 @@
 - 已确认方案：先完成最小文档体系和初始化骨架，再继续推进目录结构整理、基础模块补齐和基础设施建设
 - 计划改动点：审视当前目录结构差异，补齐模块骨架，逐步进入认证、权限、路由守卫和请求拦截等基础设施工作
 - 预计涉及文件：`src/` 下目录结构与基础设施相关文件
-- 实际改动文件：待后续基础骨架相关改动继续补充
-- 验证结果：已完成最小文档体系、项目初始化、Element Plus、Tailwind CSS 4、Axios、基础布局与 dashboard 骨架，并已通过 `vue-tsc --build`、`vite build`
+- 实际改动文件：截至目前累计包括 `docs/WORKING_CONTEXT.md`、`README.md`、`src/main.ts`、`src/layouts/AppLayout.vue`、`src/layouts/components/AppHeader.vue`、`src/layouts/components/AppSidebar.vue`、`src/router/index.ts`、`src/router/modules/dashboard.ts`、`src/router/modules/auth.ts`、`src/views/dashboard/index.vue`、`src/views/login/index.vue`、`src/styles/element-theme.css`、`src/styles/element-overrides.css`
+- 验证结果：已完成最小文档体系、项目初始化、Element Plus、Tailwind CSS 4、Axios、基础布局与 dashboard 骨架；最近一次主题与样式分层收敛已通过 `npm run type-check`、`npm run build-only`
 - 遗留问题：仍需补齐更完整的模块目录骨架，设计认证与权限基础设施，处理 Element Plus 全量引入带来的构建体积问题
 - 记录：
   - 2026-03-07 需求确认：确认当前阶段主任务仍是整理基础骨架并进入基础设施阶段。
   - 2026-03-07 开始实现：已确认先完成最小文档体系和初始化骨架，再逐步推进目录结构整理、模块骨架补齐和基础设施建设。
   - 2026-03-07 当前进展：最小文档体系、项目初始化、Element Plus、Tailwind CSS 4、Axios、基础布局与 dashboard 骨架、`vue-tsc --build`、`vite build`、`README.md` 已完成。
   - 2026-03-07 当前待处理：补齐更完整的模块目录骨架，设计认证与权限基础设施，处理 Element Plus 全量引入带来的构建体积问题。
+  - 2026-03-08 后续追加：确认将 Element Plus 的零散局部主色覆盖继续收敛为更完整的全局主题与样式分层方案，优先统一主色、圆角、基础边框，并减少页面和布局内可复用的 `:deep`。
+  - 2026-03-08 开始实现：计划新增全局主题变量文件与通用组件覆盖层，逐步移除 `AppSidebar`、`AppHeader`、`dashboard` 和 `login` 中可由全局主题接管的非语义色强写，但暂不调整 `success / warning / danger / info`。
+  - 2026-03-08 完成：已新增 `src/styles/element-theme.css` 收敛 Element Plus 主色、圆角、边框和阴影变量，并在 `src/main.ts` 接入；随后补充 `src/styles/element-overrides.css` 承载卡片、表单、输入框和表格等通用组件覆盖，主入口已按“默认样式 → 主题 token → 通用覆盖 → 项目样式”分层接入，并同步减少 `dashboard` 与 `login` 中可全局化的 `:deep`。
+  - 2026-03-08 验证：主题与样式分层收敛已通过 `npm run type-check` 和 `npm run build-only`；构建仍提示 Element Plus 全量引入导致产物体积偏大。
 
 ### REQ-20260308-01 协作文档工作流与编码规则收敛
 - 需求编号：REQ-20260308-01
@@ -124,6 +128,29 @@
   - 2026-03-08 追加验证：已通过 `npm run type-check`。
   - 2026-03-08 后续追加：移除后台 layout 中冗余的 breadcrumb 区块，直接由头部标题承接当前页面语义，并同步收紧主内容区间距。
   - 2026-03-08 追加验证：已通过 `npm run type-check`。
+
+### REQ-20260308-03 AppLayout 布局拆分与登录页接入
+- 需求编号：REQ-20260308-03
+- 需求名称：AppLayout 布局拆分与登录页接入
+- 需求目标：将后台布局中的菜单和头部拆成独立布局组件，并调整路由结构以支持不包含菜单和头部的登录页
+- 需求范围：调整布局组件与路由结构；新增登录页；同步更新需求记录
+- 已知约束：保持现有技术栈和暖色家居风格；遵守增量记录规则；当前不扩展登录态、权限守卫和真实认证逻辑
+- 当前状态：已完成 [x]
+- 已确认方案：保留 `AppLayout` 作为后台壳容器，将侧栏与头部分拆到 `src/layouts/components/`；路由拆分为后台壳页面与独立认证页并存；新增一个延续当前视觉风格的登录页
+- 计划改动点：新增 `AppSidebar` 与 `AppHeader` 组件；重构 `AppLayout`；新增认证路由模块与登录页；补充文档记录并完成基础验证
+- 预计涉及文件：`docs/WORKING_CONTEXT.md`、`src/layouts/AppLayout.vue`、`src/layouts/components/`、`src/router/index.ts`、`src/router/modules/dashboard.ts`、`src/router/modules/auth.ts`、`src/views/login/index.vue`
+- 实际改动文件：`docs/WORKING_CONTEXT.md`、`src/layouts/AppLayout.vue`、`src/layouts/components/AppSidebar.vue`、`src/layouts/components/AppHeader.vue`、`src/router/index.ts`、`src/router/modules/dashboard.ts`、`src/router/modules/auth.ts`、`src/views/login/index.vue`
+- 验证结果：已通过 `npm run type-check` 和 `npm run build-only`；构建仍提示 Element Plus 全量引入导致产物体积偏大
+- 遗留问题：登录页当前为静态演示页，尚未接入真实登录逻辑、路由守卫和认证状态管理；构建体积问题继续归属于 `REQ-20260307-02`
+- 记录：
+  - 2026-03-08 开始确认：用户提出拆分 `AppLayout`，并要求考虑未来存在不包含菜单和头部的页面，同时新增一个符合当前风格的登录页。
+  - 2026-03-08 方案确认：确认采用后台壳路由与裸页面路由并存的方式，拆分侧栏和头部布局组件，新增独立登录页。
+  - 2026-03-08 开始实现：先初始化本需求文档记录，再依次调整布局、路由和登录页，并在完成后补充验证结果与实际改动文件。
+  - 2026-03-08 完成：已将后台壳拆分为 `AppLayout`、`AppSidebar` 和 `AppHeader`，并新增独立认证路由与登录页，使后台壳页面和裸页面可以并存。
+  - 2026-03-08 验证：已通过 `npm run type-check` 和 `npm run build-only`；构建仍提示 Element Plus 全量引入导致产物体积偏大。
+  - 2026-03-08 后续追加：精简登录页左侧信息区，移除冗余说明块并收紧整体间距与高度，避免登录页出现首屏滚动条。
+  - 2026-03-08 后续追加：移除登录页左侧信息内容，保留原两栏布局比例并改为纯氛围背景，同时修正“进入看板”按钮的挤压换行问题。
+  - 2026-03-08 后续追加：移除登录页左侧空白占位区，直接改为单栏居中的登录卡片布局，减少无效装饰结构。
 
 
 

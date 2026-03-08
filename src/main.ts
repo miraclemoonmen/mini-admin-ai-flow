@@ -1,4 +1,6 @@
-﻿import 'element-plus/dist/index.css'
+import 'element-plus/dist/index.css'
+import './styles/element-theme.css'
+import './styles/element-overrides.css'
 import './styles/index.css'
 
 import { createApp } from 'vue'

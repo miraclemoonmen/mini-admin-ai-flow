@@ -1,0 +1,48 @@
+:root {
+  --el-color-primary: #f97316;
+  --el-color-primary-dark-2: #ea580c;
+  --el-color-primary-light-3: #fb923c;
+  --el-color-primary-light-5: #fdba74;
+  --el-color-primary-light-7: #fed7aa;
+  --el-color-primary-light-8: #ffedd5;
+  --el-color-primary-light-9: #fff7ed;
+
+  --el-border-color: rgba(251, 146, 60, 0.24);
+  --el-border-color-light: rgba(251, 146, 60, 0.18);
+  --el-border-color-lighter: rgba(251, 146, 60, 0.12);
+  --el-border-color-extra-light: rgba(251, 146, 60, 0.08);
+
+  --el-fill-color-light: #fff7ed;
+  --el-fill-color-lighter: #fffaf5;
+  --el-fill-color-extra-light: #fffdfb;
+
+  --el-bg-color-page: #fff8f1;
+  --el-bg-color-overlay: #ffffff;
+
+  --el-border-radius-base: 18px;
+  --el-border-radius-small: 14px;
+  --el-border-radius-round: 999px;
+
+  --el-box-shadow-light: 0 14px 32px rgba(249, 115, 22, 0.12);
+  --el-box-shadow: 0 18px 42px rgba(249, 115, 22, 0.14);
+
+  --el-menu-bg-color: #fff1e6;
+  --el-menu-text-color: #7c5a44;
+  --el-menu-active-color: #f97316;
+  --el-menu-hover-bg-color: rgba(255, 255, 255, 0.8);
+
+  --el-button-border-color: rgba(251, 146, 60, 0.24);
+  --el-button-hover-border-color: #fb923c;
+  --el-button-active-border-color: #ea580c;
+
+  --el-input-border-color: rgba(251, 146, 60, 0.18);
+  --el-input-hover-border-color: #fb923c;
+  --el-input-focus-border-color: #f97316;
+
+  --el-card-border-color: rgba(251, 191, 36, 0.18);
+  --el-fill-color-blank: #ffffff;
+
+  --el-table-border-color: rgba(251, 191, 36, 0.18);
+  --el-table-header-bg-color: rgba(255, 247, 237, 0.95);
+  --el-table-row-hover-bg-color: rgba(255, 247, 237, 0.85);
+}

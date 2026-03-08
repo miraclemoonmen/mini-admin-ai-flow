@@ -1,0 +1,37 @@
+.soft-card .el-card__header {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
+.soft-card .el-card__body {
+  padding-top: 20px;
+}
+
+.login-card .el-card__body {
+  padding: 28px;
+}
+
+.login-form .el-form-item {
+  margin-bottom: 14px;
+}
+
+.el-form-item__label {
+  color: #334155;
+  font-weight: 600;
+}
+
+.el-input__wrapper {
+  min-height: 48px;
+  border-radius: var(--el-border-radius-base);
+}
+
+.el-table {
+  border-radius: 22px;
+  overflow: hidden;
+}
+
+@media (max-width: 1023px) {
+  .login-card .el-card__body {
+    padding: 24px;
+  }
+}

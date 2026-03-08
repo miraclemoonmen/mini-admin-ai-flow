@@ -128,7 +128,7 @@
                 <p class="text-base font-semibold text-slate-900">本周重点跟进</p>
                 <p class="mt-1 text-sm text-slate-500">围绕新品打样、买手回复和集装箱排期安排外贸家居业务节奏。</p>
               </div>
-              <el-button round class="!border-orange-200 !bg-orange-50 !text-orange-600">新增跟进</el-button>
+              <el-button round class="subtle-button">新增跟进</el-button>
             </div>
           </template>
 
@@ -360,21 +360,12 @@ const notices = [
   }
 }
 
-:deep(.el-card__header) {
-  border-bottom: 0;
-  padding-bottom: 0;
-}
-
-:deep(.el-card__body) {
-  padding-top: 20px;
-}
-
-:deep(.el-table) {
-  --el-table-border-color: rgba(251, 191, 36, 0.18);
-  --el-table-header-bg-color: rgba(255, 247, 237, 0.95);
-  --el-table-row-hover-bg-color: rgba(255, 247, 237, 0.85);
-  border-radius: 22px;
-  overflow: hidden;
+.subtle-button {
+  --el-button-bg-color: var(--el-color-primary-light-9);
+  --el-button-text-color: var(--el-color-primary);
+  --el-button-hover-text-color: var(--el-color-primary);
+  --el-button-hover-bg-color: var(--el-color-primary-light-8);
+  --el-button-active-bg-color: var(--el-color-primary-light-7);
 }
 </style>
 

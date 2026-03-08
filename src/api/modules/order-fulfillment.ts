@@ -2,7 +2,36 @@ import orderDetailResponse from '@/mock/order-fulfillment-detail.json'
 import rawOrders from '@/mock/order-fulfillment.json'
 import type { MockResponse } from '@/types'
 
-export type OrderItem = (typeof rawOrders)[number]
+const ordersPayload = rawOrders as MockResponse<
+  Array<{
+    id: number
+    orderNo: string
+    customerName: string
+    companyName: string
+    country: string
+    channel: string
+    customerLevel: string
+    productLine: string
+    tradeTerm: string
+    shippingMethod: string
+    owner: string
+    orderAmount: number
+    currency: string
+    paymentStatus: string
+    orderStatus: string
+    productionProgress: number
+    etd: string
+    orderDate: string
+    dueDate: string
+    riskLevel: string
+    riskTags: string[]
+    isOverdue: boolean
+    isSampleOrder: boolean
+  }>
+>
+const detailPayload = orderDetailResponse as MockResponse<OrderDetailRecord[]>
+
+export type OrderItem = (typeof ordersPayload.data)[number]
 
 export interface OrderOverview {
   priorityLevel: string
@@ -98,14 +127,12 @@ export interface OrderDetailRecord {
   followUps: FollowUpItem[]
 }
 
-const detailPayload = orderDetailResponse as MockResponse<OrderDetailRecord[]>
-
 export function getOrderFulfillmentOrders() {
-  return rawOrders
+  return ordersPayload.code === 0 ? ordersPayload.data : []
 }
 
 export function getOrderFulfillmentOrderById(id: number) {
-  return rawOrders.find((item) => item.id === id)
+  return getOrderFulfillmentOrders().find((item) => item.id === id)
 }
 
 export function getOrderFulfillmentDetailById(id: number) {
@@ -117,5 +144,5 @@ export function getOrderFulfillmentDetailById(id: number) {
 }
 
 export function getOrderFulfillmentFilterOptions<K extends keyof OrderItem>(key: K) {
-  return [...new Set(rawOrders.map((item) => item[key]))].sort()
+  return [...new Set(getOrderFulfillmentOrders().map((item) => item[key]))].sort()
 }

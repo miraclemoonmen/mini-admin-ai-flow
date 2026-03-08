@@ -72,7 +72,7 @@
 - 已确认方案：先完成最小文档体系和初始化骨架，再继续推进目录结构整理、基础模块补齐和基础设施建设
 - 计划改动点：审视当前目录结构差异，补齐模块骨架，逐步进入认证、权限、路由守卫和请求拦截等基础设施工作
 - 预计涉及文件：`src/` 下目录结构与基础设施相关文件
-- 实际改动文件：截至目前累计包括 `docs/WORKING_CONTEXT.md`、`README.md`、`src/main.ts`、`src/layouts/AppLayout.vue`、`src/layouts/components/AppHeader.vue`、`src/layouts/components/AppSidebar.vue`、`src/router/index.ts`、`src/router/modules/auth.ts`、`src/router/dynamic-routes.ts`、`src/router/route-catalog.ts`、`src/router/route-access.ts`、`src/api/modules/auth.ts`、`src/api/modules/order-fulfillment.ts`、`src/stores/modules/auth.ts`、`src/utils/auth-storage.ts`、`src/types/index.ts`、`src/composables/use-order-fulfillment-list.ts`、`src/composables/order-fulfillment/query-schema.ts`、`src/composables/order-fulfillment/query-route.ts`、`src/views/dashboard/index.vue`、`src/views/login/index.vue`、`src/views/order-fulfillment/index.vue`、`src/views/order-fulfillment/detail.vue`、`src/styles/element-theme.css`、`src/styles/element-overrides.css`
+- 实际改动文件：截至目前累计包括 `docs/WORKING_CONTEXT.md`、`README.md`、`src/main.ts`、`src/layouts/AppLayout.vue`、`src/layouts/components/AppHeader.vue`、`src/layouts/components/AppSidebar.vue`、`src/router/index.ts`、`src/router/modules/auth.ts`、`src/router/dynamic-routes.ts`、`src/router/route-catalog.ts`、`src/router/route-access.ts`、`src/api/modules/auth.ts`、`src/api/modules/order-fulfillment.ts`、`src/stores/modules/auth.ts`、`src/utils/auth-storage.ts`、`src/types/index.ts`、`src/composables/use-order-fulfillment-list.ts`、`src/composables/order-fulfillment/query-schema.ts`、`src/composables/order-fulfillment/query-route.ts`、`src/views/dashboard/index.vue`、`src/views/login/index.vue`、`src/views/order-fulfillment/index.vue`、`src/views/order-fulfillment/detail.vue`、`src/styles/element-theme.css`、`src/styles/element-overrides.css`、`src/mock/menu.json`
 - 验证结果：已完成最小文档体系、项目初始化、Element Plus、Tailwind CSS 4、Axios、基础布局与 dashboard 骨架；最近一次主题与样式分层收敛已通过 `npm run type-check`、`npm run build-only`
 - 遗留问题：仍需补齐更完整的模块目录骨架，设计认证与权限基础设施，处理 Element Plus 全量引入带来的构建体积问题
 - 记录：
@@ -127,6 +127,14 @@
     - 2026-03-08 开始实现：计划将订单列表逻辑继续拆成 `query-schema / query-route / use-order-fulfillment-list` 三层，并让动态路由注册与已知路径判断都从同一份 `route-catalog` 派生，减少重复事实来源。
     - 2026-03-08 完成：已将订单列表查询模型继续拆为 `query-schema / query-route / use-order-fulfillment-list` 三层，列表 composable 只保留组合与筛选主逻辑；同时将动态路由注册映射和已知路径判断统一改为从同一份 `route-catalog` 派生，不再单独维护并行的路径定义。
     - 2026-03-08 验证：已通过 `npm run type-check` 和 `npm run build-only`；构建仍提示主包 chunk 偏大，该问题继续保留在主线遗留问题中。
+    - 2026-03-08 后续追加：复核后确认 `auth-login.json` 与 `menu.json` 存在重复菜单数据，而当前后台未登录本就不可进入，保留侧栏 fallback 菜单已无实际必要。
+    - 2026-03-08 开始实现：计划删除 `src/mock/menu.json`，并让 `AppSidebar` 仅消费 `authStore.menus`，彻底统一菜单来源为登录返回数据；不改动现有登录守卫和动态路由行为。
+    - 2026-03-08 完成：已删除冗余的 `src/mock/menu.json`，并将 `AppSidebar` 调整为仅依赖 `authStore.menus` 渲染侧栏；后台菜单来源已统一为登录返回的用户菜单数据。
+    - 2026-03-08 验证：已复查项目内无残留 `menu.json` fallback 引用，并通过 `npm run type-check`。
+    - 2026-03-08 后续追加：用户确认订单列表 mock 也需要统一成 `code / msg / data` 响应结构，避免订单链路继续保留裸数组格式。
+    - 2026-03-08 开始实现：计划仅调整 `src/mock/order-fulfillment.json` 与 `src/api/modules/order-fulfillment.ts`，让订单列表读取统一改为从响应 `data` 中取值；列表 composable 和详情页继续保持当前消费方式不变。
+    - 2026-03-08 完成：已将 `src/mock/order-fulfillment.json` 调整为统一的 `code / msg / data` 响应结构，并同步改造订单 API 模块，列表、详情和筛选项读取统一从响应 `data` 中取值。
+    - 2026-03-08 验证：已按 UTF-8 复读确认 `order-fulfillment.json` 中文内容正常，并通过 `npm run type-check`。
 
 ### REQ-20260308-01 协作文档工作流与编码规则收敛
 - 需求编号：REQ-20260308-01

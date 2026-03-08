@@ -1,10 +1,37 @@
-﻿# mini-admin-ai-flow
+# mini-admin-ai-flow
 
-一个基于 Vue 3 的后台管理前端项目。
+一个基于 Vue 3 的外贸后台演示站点，当前重点是展示一套由 mock 数据驱动的后台前端骨架，包括登录、动态菜单、动态路由、复杂查询页和详情页。
 
-当前项目已经完成基础脚手架初始化，并接入了后台项目常用的核心依赖与基础骨架，后续会在此基础上继续完善认证、权限、页面模块和业务能力。
+## 当前实现
 
-## 当前技术栈
+目前已经具备：
+
+- Mock 驱动的登录闭环
+  - 账号密码校验
+  - 登录态持久化
+  - 路由守卫
+  - 退出登录
+- 基于登录返回菜单的动态侧栏和动态业务路由
+- `403 / 404` 页面与访问分流
+- 外贸家居经营看板
+- 外贸订单履约追踪复杂查询页
+  - 基础筛选 / 高级筛选
+  - URL 状态同步
+  - 本地分页与分页大小切换
+  - 独立详情页
+- Element Plus 中文化与统一主题覆盖
+
+## 演示账号
+
+当前内置两组演示账号：
+
+- `mia.chen / Mia@2026`
+  - 完整演示账号，包含经营看板、订单履约追踪及若干禁用占位菜单
+- `dashboard.only / Dash@2026`
+  - 仅保留经营看板菜单，用于验证菜单和动态路由收口效果
+
+## 技术栈
+
 - Vue 3
 - TypeScript
 - Vue Router
@@ -16,62 +43,68 @@
 - ESLint
 - Prettier
 
-## 项目阶段
-当前处于基础结构整理阶段。
-
-已完成：
-- Vue 官方脚手架初始化
-- Router、Pinia、Element Plus、Tailwind CSS、Axios 接入
-- 基础后台布局和 Dashboard 骨架
-- 基础请求封装入口
-- 项目协作与上下文文档落地
-
 ## 常用命令
+
 安装依赖：
+
 ```bash
 npm install
 ```
 
 启动开发环境：
+
 ```bash
 npm run dev
 ```
 
 类型检查：
+
 ```bash
 npm run type-check
 ```
 
 生产构建：
+
 ```bash
 npm run build
 ```
 
+仅构建：
+
+```bash
+npm run build-only
+```
+
 代码检查：
+
 ```bash
 npm run lint
 ```
 
 代码格式化：
+
 ```bash
 npm run format
 ```
 
 ## 文档入口
-项目协作和上下文文档：
-- `AGENTS.md`：AI 助手协作规则
-- `docs/CONVENTIONS.md`：项目开发流程和执行规范
-- `docs/WORKING_CONTEXT.md`：当前项目状态、关键决定、当前进行中需求和需求滚动记录
+
+- [AGENTS.md](/Users/mirac/Desktop/mini-admin-ai-flow/AGENTS.md)：AI 助手协作规则
+- [docs/CONVENTIONS.md](/Users/mirac/Desktop/mini-admin-ai-flow/docs/CONVENTIONS.md)：项目开发流程和执行规范
+- [docs/WORKING_CONTEXT.md](/Users/mirac/Desktop/mini-admin-ai-flow/docs/WORKING_CONTEXT.md)：当前项目状态、关键决定、主线需求和滚动记录
 
 ## 当前目录结构
+
 ```text
 src/
   api/
     modules/
   components/
   composables/
-  constants/
+    order-fulfillment/
   layouts/
+    components/
+  mock/
   router/
     modules/
   stores/
@@ -80,21 +113,18 @@ src/
   types/
   utils/
   views/
+    403/
+    404/
     dashboard/
+    login/
+    order-fulfillment/
 ```
 
-当前已经建立的核心入口包括：
-- `src/main.ts`
-- `src/App.vue`
-- `src/router/index.ts`
-- `src/router/modules/dashboard.ts`
-- `src/layouts/AppLayout.vue`
-- `src/views/dashboard/index.vue`
-- `src/api/request.ts`
-- `src/styles/index.css`
-
 ## 当前说明
-- 默认包管理工具：`npm`
-- 默认脚手架初始化命令：`npm create vue@latest`
-- 当前构建可通过
-- Element Plus 目前为全量引入，构建体积优化问题已记录在 `REQ-20260307-02`
+
+- 当前项目处于“基础框架收口阶段”
+- 认证、菜单、路由和订单页均以本地 mock 数据驱动
+- 后台菜单来源已统一为登录返回的用户菜单数据
+- 订单列表与详情数据已统一为 `code / msg / data` 响应结构
+- 当前构建可以通过，但主包 chunk 仍偏大，包体积优化尚未继续推进
+- 当前没有自动化测试，稳定性主要依赖类型检查、构建校验和人工回归

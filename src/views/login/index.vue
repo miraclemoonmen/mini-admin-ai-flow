@@ -83,6 +83,19 @@
                     <strong>{{ demoCredentials.password }}</strong>
                   </div>
                 </div>
+
+                <div class="mt-4 flex flex-wrap gap-2">
+                  <button
+                    v-for="item in switchableAccounts"
+                    :key="item.account"
+                    type="button"
+                    class="account-switch"
+                    :class="{ 'account-switch-active': form.account === item.account }"
+                    @click="switchDemoAccount(item.account)"
+                  >
+                    {{ item.label }}
+                  </button>
+                </div>
               </div>
 
               <el-alert
@@ -151,7 +164,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { ElMessage, type FormInstance, type FormRules } from 'element-plus'
 
 import { useAuthStore } from '@/stores/modules/auth'
-import { getDemoCredentials } from '@/utils/auth-mock'
+import { getDemoCredentials, getSwitchableDemoAccounts } from '@/utils/auth-mock'
 
 interface LoginForm {
   account: string
@@ -176,6 +189,7 @@ const route = useRoute()
 const router = useRouter()
 const authStore = useAuthStore()
 const demoCredentials = getDemoCredentials()
+const switchableAccounts = getSwitchableDemoAccounts()
 const formRef = ref<FormInstance>()
 const submitting = ref(false)
 const errorMessage = ref('')
@@ -211,6 +225,18 @@ const rules: FormRules<LoginForm> = {
       trigger: 'blur',
     },
   ],
+}
+
+function switchDemoAccount(account: string) {
+  const targetAccount = switchableAccounts.find((item) => item.account === account)
+
+  if (!targetAccount) {
+    return
+  }
+
+  form.account = targetAccount.account
+  form.password = targetAccount.password
+  errorMessage.value = ''
 }
 
 async function handleLogin() {
@@ -354,6 +380,34 @@ async function handleLogin() {
 
 .error-alert {
   border-radius: 20px;
+}
+
+.account-switch {
+  border-radius: 9999px;
+  border: 1px solid rgba(251, 191, 36, 0.16);
+  background: rgba(255, 255, 255, 0.82);
+  padding: 8px 14px;
+  color: rgb(71 85 105);
+  font-size: 13px;
+  font-weight: 600;
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease,
+    color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.account-switch:hover {
+  border-color: rgba(251, 146, 60, 0.28);
+  background: rgba(255, 247, 237, 0.94);
+  color: rgb(154 52 18);
+}
+
+.account-switch-active {
+  border-color: rgba(251, 146, 60, 0.2);
+  background: linear-gradient(135deg, rgba(255, 237, 213, 1), rgba(255, 247, 237, 0.96));
+  color: rgb(154 52 18);
+  box-shadow: 0 10px 20px rgba(249, 115, 22, 0.08);
 }
 
 .login-button {

@@ -49,6 +49,16 @@ export function getDemoCredentials() {
   return authPayload.data.demoCredentials
 }
 
+export function getSwitchableDemoAccounts() {
+  return authPayload.data.accounts
+    .filter((item) => ['mia.chen', 'dashboard.only'].includes(item.account))
+    .map((item) => ({
+      account: item.account,
+      password: item.password,
+      label: item.userInfo.name,
+    }))
+}
+
 export function getDefaultUserMenus() {
   const firstActiveAccount = authPayload.data.accounts.find((item) => item.status === 'active')
   return firstActiveAccount?.menus ?? []
@@ -112,5 +122,6 @@ export function buildSession(data: LoginSuccessData, rememberMe: boolean): AuthS
     expiresAt: data.expiresAt,
     rememberMe,
     userInfo: data.userInfo,
+    menus: data.menus,
   }
 }

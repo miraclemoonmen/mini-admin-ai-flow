@@ -1,6 +1,6 @@
 <template>
   <el-aside
-    :width="appStore.sidebarCollapsed ? '82px' : '252px'"
+    width="252px"
     class="flex h-screen flex-col border-r border-orange-100 bg-[#fff1e6] text-slate-900 transition-all duration-300"
   >
     <div class="px-4 py-4">
@@ -10,7 +10,7 @@
         >
           FH
         </div>
-        <div v-show="!appStore.sidebarCollapsed" class="ml-3 min-w-0">
+        <div class="ml-3 min-w-0">
           <p class="truncate text-sm font-semibold text-slate-900">Furni Harbor</p>
           <p class="truncate text-xs text-slate-500">外贸家居运营台</p>
         </div>
@@ -20,11 +20,9 @@
     <div class="flex-1 overflow-y-auto px-3 pb-4">
       <el-menu
         :default-active="activeMenu"
-        :collapse="appStore.sidebarCollapsed"
-        :collapse-transition="false"
         router
       >
-        <template v-for="item in menuItems" :key="item.key">
+        <template v-for="item in visibleMenuItems" :key="item.key">
           <el-sub-menu v-if="item.children?.length" :index="item.key">
             <template #title>
               <div class="menu-icon" aria-hidden="true">{{ item.icon }}</div>
@@ -60,11 +58,10 @@ import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 
 import menuMockResponse from '@/mock/menu.json'
-import { useAppStore } from '@/stores/modules/app'
+import { getVisibleMenuItems, resolveActiveMenuPath } from '@/router/route-access'
 import { useAuthStore } from '@/stores/modules/auth'
 import type { AppMenuItem, MockResponse } from '@/types'
 
-const appStore = useAppStore()
 const authStore = useAuthStore()
 const route = useRoute()
 const menuResponse = menuMockResponse as MockResponse<AppMenuItem[]>
@@ -74,13 +71,9 @@ const menuItems = computed(() =>
   authStore.menus.length > 0 ? authStore.menus : fallbackMenuItems,
 )
 
-const activeMenu = computed(() => {
-  if (route.path.startsWith('/orders/tracking/')) {
-    return '/orders/tracking'
-  }
+const visibleMenuItems = computed(() => getVisibleMenuItems(menuItems.value))
 
-  return route.path
-})
+const activeMenu = computed(() => resolveActiveMenuPath(route.path, menuItems.value))
 </script>
 
 <style scoped>
@@ -133,43 +126,5 @@ const activeMenu = computed(() => {
   background: linear-gradient(135deg, #fb923c 0%, #f97316 100%);
   color: white;
   box-shadow: none;
-}
-
-:deep(.el-menu--collapse) {
-  width: 100%;
-}
-
-:deep(.el-menu--collapse .el-menu-item),
-:deep(.el-menu--collapse .el-sub-menu__title) {
-  justify-content: center;
-  padding: 0;
-  margin-inline: auto;
-  width: 56px;
-  gap: 0;
-}
-
-:deep(.el-menu--collapse .menu-label) {
-  display: none;
-}
-
-:deep(.el-menu--collapse .menu-icon) {
-  margin: 0;
-}
-
-:deep(.el-menu--collapse .el-sub-menu__icon-arrow) {
-  display: none;
-}
-
-:deep(.el-menu--collapse .el-tooltip__trigger),
-:deep(.el-menu--collapse .el-sub-menu > .el-tooltip),
-:deep(.el-menu--collapse .el-menu-tooltip__trigger) {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-}
-
-:deep(.el-menu--collapse .el-sub-menu .el-sub-menu__title) {
-  padding-inline: 0;
 }
 </style>

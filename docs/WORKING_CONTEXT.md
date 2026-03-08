@@ -1,7 +1,7 @@
 ﻿# WORKING_CONTEXT.md
 
 ## 当前状态
-项目已完成基础脚手架初始化和首批核心依赖接入，当前处于基础结构整理阶段。
+项目已完成基础脚手架、后台布局、登录认证、动态菜单、动态业务路由和首批业务演示页面，当前处于基础框架收口阶段。
 
 ## 已确认事项
 - 这是一个后台管理前端项目
@@ -17,12 +17,14 @@
 - [x] 完成 Vue 官方脚手架初始化
 - [x] 接入 Element Plus、Tailwind CSS、Axios
 - [x] 建立基础后台布局、路由和请求封装骨架
-- [ ] 补齐基础目录和模块骨架
-- [ ] 进入正式开发前的基础设施阶段
+- [x] 完成登录态、路由守卫和动态菜单/路由基础闭环
+- [x] 完成首批业务演示页面与 mock 数据联动
+- [ ] 收口基础框架结构，减少重复定义和临时实现
+- [ ] 为后续接口化、权限细化和通用页面模式抽象做准备
 
 ## 当前进行中需求
 - 需求编号：REQ-20260307-02
-- 摘要：基础骨架整理与下一阶段基础设施准备，当前状态为进行中 [ ]
+- 摘要：基础框架收口与下一阶段基础设施整理，当前状态为进行中 [ ]
 
 ## 关键决定
 - `docs/CONVENTIONS.md` 是规则来源
@@ -35,9 +37,9 @@
 - 当前无阻塞项
 
 ## 当前下一步
-- [ ] REQ-20260307-02：补齐基础模块目录骨架
-- [ ] REQ-20260307-02：进入登录态、路由守卫、请求拦截等基础设施建设
-- [ ] REQ-20260307-02：评估 Element Plus 全量引入带来的构建体积问题并制定收敛方案
+- [ ] REQ-20260307-02：收口认证、菜单和动态路由相关基础设施结构
+- [ ] REQ-20260307-02：整理 mock 到 service/store/页面之间的职责边界
+- [ ] REQ-20260307-02：继续评估 Element Plus 全量引入带来的构建体积问题并制定收敛方案
 
 ## 需求记录
 
@@ -70,7 +72,7 @@
 - 已确认方案：先完成最小文档体系和初始化骨架，再继续推进目录结构整理、基础模块补齐和基础设施建设
 - 计划改动点：审视当前目录结构差异，补齐模块骨架，逐步进入认证、权限、路由守卫和请求拦截等基础设施工作
 - 预计涉及文件：`src/` 下目录结构与基础设施相关文件
-- 实际改动文件：截至目前累计包括 `docs/WORKING_CONTEXT.md`、`README.md`、`src/main.ts`、`src/layouts/AppLayout.vue`、`src/layouts/components/AppHeader.vue`、`src/layouts/components/AppSidebar.vue`、`src/router/index.ts`、`src/router/modules/dashboard.ts`、`src/router/modules/auth.ts`、`src/views/dashboard/index.vue`、`src/views/login/index.vue`、`src/styles/element-theme.css`、`src/styles/element-overrides.css`
+- 实际改动文件：截至目前累计包括 `docs/WORKING_CONTEXT.md`、`README.md`、`src/main.ts`、`src/layouts/AppLayout.vue`、`src/layouts/components/AppHeader.vue`、`src/layouts/components/AppSidebar.vue`、`src/router/index.ts`、`src/router/modules/auth.ts`、`src/router/dynamic-routes.ts`、`src/router/route-catalog.ts`、`src/router/route-access.ts`、`src/api/modules/auth.ts`、`src/stores/modules/auth.ts`、`src/utils/auth-storage.ts`、`src/types/index.ts`、`src/views/dashboard/index.vue`、`src/views/login/index.vue`、`src/styles/element-theme.css`、`src/styles/element-overrides.css`
 - 验证结果：已完成最小文档体系、项目初始化、Element Plus、Tailwind CSS 4、Axios、基础布局与 dashboard 骨架；最近一次主题与样式分层收敛已通过 `npm run type-check`、`npm run build-only`
 - 遗留问题：仍需补齐更完整的模块目录骨架，设计认证与权限基础设施，处理 Element Plus 全量引入带来的构建体积问题
 - 记录：
@@ -82,6 +84,37 @@
   - 2026-03-08 开始实现：计划新增全局主题变量文件与通用组件覆盖层，逐步移除 `AppSidebar`、`AppHeader`、`dashboard` 和 `login` 中可由全局主题接管的非语义色强写，但暂不调整 `success / warning / danger / info`。
   - 2026-03-08 完成：已新增 `src/styles/element-theme.css` 收敛 Element Plus 主色、圆角、边框和阴影变量，并在 `src/main.ts` 接入；随后补充 `src/styles/element-overrides.css` 承载卡片、表单、输入框和表格等通用组件覆盖，主入口已按“默认样式 → 主题 token → 通用覆盖 → 项目样式”分层接入，并同步减少 `dashboard` 与 `login` 中可全局化的 `:deep`。
   - 2026-03-08 验证：主题与样式分层收敛已通过 `npm run type-check` 和 `npm run build-only`；构建仍提示 Element Plus 全量引入导致产物体积偏大。
+  - 2026-03-08 后续追加：结合当前代码状态确认基础框架已进入收口阶段，优先整理认证、菜单和动态路由这一条基础设施链，减少页面、store 和 mock 之间的直接耦合。
+  - 2026-03-08 开始实现：计划先将认证 mock 访问抽到 `src/api/modules/auth.ts`，再把动态路由拆分为“路由目录 / 访问判断 / 动态注册”三层，并补充会话恢复的最小兼容兜底，过程中不改变现有业务行为。
+  - 2026-03-08 完成：已将认证 mock 访问抽离到 `src/api/modules/auth.ts`，登录页和 auth store 不再直接依赖底层 mock 工具；同时将动态路由拆分为 `route-catalog / route-access / dynamic-routes` 三层，侧栏高亮与守卫访问判断统一复用同一套路径规则，并为旧会话恢复补充最小兼容兜底。
+  - 2026-03-08 验证：已复查项目内无残留 `auth-mock` 旧引用，并通过 `npm run type-check`。
+  - 2026-03-08 后续追加：继续收口动态路由目录，避免“系统已知路径规则”与业务路由目录分成两份维护，减少后续页面增加时的同步成本。
+  - 2026-03-08 开始实现：计划将业务路径匹配规则并入 `src/router/route-catalog.ts` 的统一目录定义中，再让 `route-access` 从同一份目录派生“已知路径判断”，不改变现有守卫和动态注册行为。
+  - 2026-03-08 完成：已将“系统已知路径规则”并入 `src/router/route-catalog.ts` 的统一路由目录定义，`route-access` 不再依赖单独的 matcher 常量，而是直接从同一份目录派生已知路径判断。
+  - 2026-03-08 后续追加：用户确认应直接在用户 mock 路由数据中区分“是否显示在左侧菜单”，避免继续依赖详情页访问的业务硬编码特例。
+  - 2026-03-08 开始实现：计划扩展 `AppMenuItem` 结构，给可访问路由数据增加 `visibleInMenu / activeMenuPath` 字段；同步调整认证 mock、兜底菜单、侧栏渲染和访问判断，使隐藏详情页也从用户 mock 路由树中获取权限与高亮归属。
+  - 2026-03-08 完成：已扩展 `AppMenuItem` 为“可访问路由 + 菜单显示”双语义结构，认证 mock 与兜底菜单均为订单详情补充了隐藏路由项；侧栏仅渲染 `visibleInMenu !== false` 的项，而访问判断与当前菜单高亮改为按路由模式通用匹配，不再保留订单详情的业务硬编码特例。
+  - 2026-03-08 验证：已通过 `npm run type-check`，并复查项目内不再存在基于 `orders/tracking` 的访问放行硬编码。
+  - 2026-03-08 后续追加：用户反馈后台主内容区在列表跳详情时会继承上一页滚动位置，要求保留当前布局滚动模型，但在路由切换后主动重置主内容滚动容器。
+  - 2026-03-08 开始实现：计划仅给后台主内容区补充稳定选择器，并在路由切换完成后将该滚动容器回到顶部，不改动页面内部结构和现有导航行为。
+  - 2026-03-08 完成：已为后台主内容区补充 `.app-main-scroll` 稳定选择器，并在每次路由切换完成后主动将该滚动容器滚回顶部，避免订单列表跳详情时继承旧滚动位置。
+  - 2026-03-08 验证：已通过 `npm run type-check`。
+  - 2026-03-08 后续追加：复核后确认当前主内容区滚动恢复实现过于粗暴，同一路由内仅 query 变化时也会重置滚动，影响订单查询页点击“查询”后的阅读连续性。
+  - 2026-03-08 开始实现：计划仅收窄路由切换后的滚动重置条件，改为只在真正切换页面路径时将主滚动容器回到顶部，保留同一路由 query 更新时的当前位置。
+  - 2026-03-08 完成：已将主内容区滚动重置条件收窄为仅在 `to.path !== from.path` 时执行，避免订单查询页在同一路由下同步 query 时被错误拉回顶部。
+  - 2026-03-08 验证：已通过 `npm run type-check`。
+  - 2026-03-08 后续追加：用户确认导航折叠功能实际价值较低，希望移除“收起导航 / 展开导航”，改为固定展开侧栏。
+  - 2026-03-08 开始实现：计划删除头部折叠按钮，将侧栏改为固定宽度并清理仅服务于折叠导航的 `app` store 与样式，不调整其他布局和菜单逻辑。
+  - 2026-03-08 完成：已移除头部的导航折叠按钮，侧栏改为固定 252px 展开宽度，同时删除了仅服务于折叠导航的 `src/stores/modules/app.ts` 和对应折叠样式。
+  - 2026-03-08 验证：已复查项目内无残留 `useAppStore / sidebarCollapsed / toggleSidebar` 引用，并通过 `npm run type-check`。
+  - 2026-03-08 后续追加：用户确认头部左侧 `FURNITURE EXPORT STUDIO` 文案没有实际价值，希望移除，并对标题区做一次不扩大范围的轻量美化。
+  - 2026-03-08 开始实现：计划仅调整 `AppHeader` 左侧标题块，去掉英文副标题，并通过小尺寸装饰和更清晰的字重层级提升标题区观感，不改动右侧用户区。
+  - 2026-03-08 完成：已移除头部左侧无意义的英文副标题，并将当前页面标题重组为“圆点装饰 + 主标题 + 简短说明”的轻量标题块，保持头部整体结构不变。
+  - 2026-03-08 验证：已通过 `npm run type-check`。
+  - 2026-03-08 后续追加：复核后确认标题块里的“当前页面内容与操作入口”同样没有信息价值，需要继续删掉，只保留主标题本身。
+  - 2026-03-08 开始实现：计划仅移除标题块中的副文案，保留当前圆点装饰与主标题结构，不再扩展其他头部改动。
+  - 2026-03-08 完成：已移除标题块中的无效副文案，头部左侧现仅保留圆点装饰与当前页面主标题。
+  - 2026-03-08 验证：已通过 `npm run type-check`。
 
 ### REQ-20260308-01 协作文档工作流与编码规则收敛
 - 需求编号：REQ-20260308-01
@@ -207,6 +240,10 @@
   - 2026-03-08 开始实现：计划扩充 `src/mock/order-fulfillment.json` 的模拟数据规模，并让订单履约页分页大小支持选择且同步到 URL，再重新验证。
   - 2026-03-08 后续追加：确认 URL 中不再直接存中文枚举文案，改为存稳定 code，以提升链接可读性和后续维护性。
   - 2026-03-08 开始实现：计划保留页面中文展示不变，仅调整订单履约页 query 的序列化与反序列化映射，让枚举筛选条件改用 code 存入 URL，并在完成后重新验证。
+  - 2026-03-08 后续追加：用户反馈订单列表中的风险标签列在标签较多时容易换行，影响表格行高和视觉稳定性。
+  - 2026-03-08 开始实现：计划仅调整风险标签列的展示方式，改为单行展示并限制可见标签数量，多余标签用汇总标识承接，不调整筛选和数据逻辑。
+  - 2026-03-08 完成：已将风险标签列调整为单行紧凑展示，默认只显示风险等级和前两个风险标签，剩余标签通过 `+N` 汇总承接，避免表格行高因标签过多而换行拉伸。
+  - 2026-03-08 追加验证：已通过 `npm run type-check`。
 
 ### REQ-20260308-05 侧栏菜单改为 Mock 驱动的动态渲染
 - 需求编号：REQ-20260308-05

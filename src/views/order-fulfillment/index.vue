@@ -284,16 +284,24 @@
 
         <el-table-column label="风险标签" min-width="220">
           <template #default="{ row }">
-            <div class="flex flex-wrap gap-2">
+            <div class="risk-cell">
               <el-tag :type="riskLevelTagType(row.riskLevel)" round>{{ row.riskLevel }}风险</el-tag>
               <el-tag
-                v-for="tag in row.riskTags"
+                v-for="tag in getVisibleRiskTags(row.riskTags)"
                 :key="tag"
                 effect="plain"
                 round
                 class="risk-chip"
               >
                 {{ tag }}
+              </el-tag>
+              <el-tag
+                v-if="getHiddenRiskTagCount(row.riskTags) > 0"
+                effect="plain"
+                round
+                class="risk-chip risk-chip-muted"
+              >
+                +{{ getHiddenRiskTagCount(row.riskTags) }}
               </el-tag>
             </div>
           </template>
@@ -853,6 +861,14 @@ function progressColor(progress: number) {
 
   return '#f87171'
 }
+
+function getVisibleRiskTags(tags: string[]) {
+  return tags.slice(0, 2)
+}
+
+function getHiddenRiskTagCount(tags: string[]) {
+  return Math.max(tags.length - 2, 0)
+}
 </script>
 
 <style scoped>
@@ -875,5 +891,23 @@ function progressColor(progress: number) {
   --el-tag-border-color: rgba(251, 146, 60, 0.24);
   --el-tag-bg-color: rgba(255, 247, 237, 0.9);
   --el-tag-text-color: #9a3412;
+}
+
+.risk-cell {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.risk-chip {
+  flex-shrink: 0;
+}
+
+.risk-chip-muted {
+  --el-tag-border-color: rgba(148, 163, 184, 0.22);
+  --el-tag-bg-color: rgba(248, 250, 252, 0.96);
+  --el-tag-text-color: #64748b;
 }
 </style>

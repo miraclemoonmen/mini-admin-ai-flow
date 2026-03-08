@@ -4,12 +4,8 @@ import AppLayout from '@/layouts/AppLayout.vue'
 import store from '@/stores'
 import { useAuthStore } from '@/stores/modules/auth'
 
-import {
-  canAccessPath,
-  ensureDynamicRoutes,
-  getFirstAccessiblePath,
-  isKnownBusinessPath,
-} from './dynamic-routes'
+import { ensureDynamicRoutes } from './dynamic-routes'
+import { canAccessPath, getFirstAccessiblePath, isKnownBusinessPath } from './route-access'
 import authRoutes from './modules/auth'
 
 const router = createRouter({
@@ -39,6 +35,27 @@ const router = createRouter({
     },
     ...authRoutes,
   ],
+})
+
+router.afterEach((to, from) => {
+  if (typeof window === 'undefined') {
+    return
+  }
+
+  if (to.path === from.path) {
+    return
+  }
+
+  window.requestAnimationFrame(() => {
+    const mainScrollContainer = document.querySelector('.app-main-scroll')
+
+    if (mainScrollContainer instanceof HTMLElement) {
+      mainScrollContainer.scrollTo({
+        top: 0,
+        left: 0,
+      })
+    }
+  })
 })
 
 router.beforeEach((to) => {

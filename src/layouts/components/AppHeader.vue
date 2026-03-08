@@ -2,14 +2,9 @@
   <el-header
     class="mx-4 mt-4 flex h-18 shrink-0 items-center justify-between rounded-[30px] border border-orange-100 bg-white px-6 shadow-[0_14px_34px_rgba(249,115,22,0.08)]"
   >
-    <div class="flex items-center gap-4">
-      <el-button round class="header-toggle" @click="appStore.toggleSidebar()">
-        {{ appStore.sidebarCollapsed ? '展开导航' : '收起导航' }}
-      </el-button>
-      <div>
-        <p class="text-xs uppercase tracking-[0.24em] text-orange-400">FURNITURE EXPORT STUDIO</p>
-        <p class="text-lg font-semibold text-slate-900">{{ currentPageTitle }}</p>
-      </div>
+    <div class="page-title-wrap">
+      <span class="page-title-mark" aria-hidden="true"></span>
+      <p class="page-title">{{ currentPageTitle }}</p>
     </div>
 
     <div class="flex items-center gap-3">
@@ -38,10 +33,8 @@
 import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
-import { useAppStore } from '@/stores/modules/app'
 import { useAuthStore } from '@/stores/modules/auth'
 
-const appStore = useAppStore()
 const authStore = useAuthStore()
 const route = useRoute()
 const router = useRouter()
@@ -78,12 +71,28 @@ async function handleLogout() {
 </script>
 
 <style scoped>
-.header-toggle {
-  --el-button-bg-color: var(--el-color-primary-light-9);
-  --el-button-text-color: var(--el-color-primary);
-  --el-button-hover-text-color: var(--el-color-primary);
-  --el-button-hover-bg-color: var(--el-color-primary-light-8);
-  --el-button-active-bg-color: var(--el-color-primary-light-7);
+.page-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.page-title-mark {
+  flex: 0 0 12px;
+  width: 12px;
+  height: 12px;
+  border-radius: 9999px;
+  background: linear-gradient(135deg, #fb923c 0%, #f97316 100%);
+  box-shadow:
+    0 0 0 6px rgba(255, 237, 213, 0.95),
+    0 8px 18px rgba(249, 115, 22, 0.16);
+}
+
+.page-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: rgb(15 23 42);
+  line-height: 1.2;
 }
 
 .user-card {

@@ -298,6 +298,12 @@
             </div>
           </template>
         </el-table-column>
+
+        <el-table-column label="操作" width="120" fixed="right" align="center">
+          <template #default="{ row }">
+            <el-button link type="primary" @click="goToDetail(row.id)">查看详情</el-button>
+          </template>
+        </el-table-column>
       </el-table>
 
       <div class="mt-5 flex justify-end">
@@ -796,6 +802,15 @@ function toggleAdvancedFilters() {
   if (!isHydratingFromRoute.value) {
     void syncRouteQuery()
   }
+}
+
+function goToDetail(id: number) {
+  void router.push({
+    name: 'OrderFulfillmentDetail',
+    params: {
+      id,
+    },
+  })
 }
 
 function formatAmount(value: number) {

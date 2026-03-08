@@ -15,6 +15,14 @@ const fulfillmentRoutes: RouteRecordRaw[] = [
         },
         component: () => import('@/views/order-fulfillment/index.vue'),
       },
+      {
+        path: 'tracking/:id',
+        name: 'OrderFulfillmentDetail',
+        meta: {
+          title: '订单履约详情',
+        },
+        component: () => import('@/views/order-fulfillment/detail.vue'),
+      },
     ],
   },
 ]

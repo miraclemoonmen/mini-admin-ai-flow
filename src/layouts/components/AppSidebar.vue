@@ -32,9 +32,9 @@
           <div class="menu-icon" aria-hidden="true">品</div>
           <span class="menu-label">产品选品</span>
         </el-menu-item>
-        <el-menu-item index="/orders" disabled>
+        <el-menu-item index="/orders/tracking">
           <div class="menu-icon" aria-hidden="true">单</div>
-          <span class="menu-label">订单履约</span>
+          <span class="menu-label">订单履约追踪</span>
         </el-menu-item>
         <el-sub-menu index="workspace">
           <template #title>
